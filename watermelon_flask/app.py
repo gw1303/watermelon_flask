@@ -1,5 +1,6 @@
 from flask import Flask, request, json, jsonify
 from gensim.models import Word2Vec
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -7,15 +8,18 @@ a = 0
 
 model = Word2Vec.load('/home/ubuntu/watermelon/song2vec/song2vec.model')
 
+songDf = pd.read_json('/home/ubuntu/watermelon/data/song_meta.json')
+
 @app.route("/")
 def hello():
     
     global a
-    global model
+    global songDf
 
     a += 1
 
-    return str(a) + str(model)
+
+    return str(a) + songDf.iloc['song_name'][a]
 
 @app.route("/message", methods=['POST'])
 def message():
