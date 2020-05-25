@@ -340,8 +340,8 @@ def message():
 @app.route("/addMusic", methods=['POST'])
 def addMusic() :
     req = request.get_json()
-    # return_str = req['action']['clientExtra']
-    # return_str = str(return_str)
+    return_str = req['action']['clientExtra']
+    return_str = str(return_str)
 
     
     res = {
@@ -349,7 +349,7 @@ def addMusic() :
         'template': {
             'outputs': [{
                 'simpleText': {
-                    'text': str(req)
+                    'text': str(return_str)
                 }
             }]
         }
