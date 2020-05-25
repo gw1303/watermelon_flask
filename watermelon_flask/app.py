@@ -175,26 +175,79 @@ def hello():
     
     return 'hello'
 
+
+@app.route("/start", methods=['POST'])
+def start():
+    req = request.get_json()
+    return_str = req['userRequest']['utterance']
+    return_str = str(return_str).strip()
+
+    if return_str == '시작':
+        res = {
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': '무엇을 하시겠습니까 ?'
+                    }
+                }],
+                'quickReplies': [{
+                    'label': '음악추가',
+                    'action': 'message',
+                    'messageText': '음악추가',
+
+                },
+                {
+                    'label': '음악추천',
+                    'action': 'message',
+                    'messageText': '음악추천',
+
+                }]
+            }
+        }
+
+        return jsonify(res)
+
 @app.route("/message", methods=['POST'])
 def message():
     req = request.get_json()
     return_str = req['userRequest']['utterance']
     return_str = str(return_str).strip()
 
-    if return_str == 'test':
+    if return_str == '노래추가':
         res = {
             'version': "2.0",
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': 'test 성공입니다.'
+                        'text': '노래추가 페이지'
                     }
                 }],
                 'quickReplies': [{
                     'label': '처음으로',
                     'action': 'message',
                     'messageText': '처음으로',
-                    
+
+                }]
+            }
+        }
+
+        return jsonify(res)
+        
+    elif return_str == '음악추천':
+        res = {
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': '음악추천 페이지'
+                    }
+                }],
+                'quickReplies': [{
+                    'label': '처음으로',
+                    'action': 'message',
+                    'messageText': '처음으로',
+
                 }]
             }
         }
