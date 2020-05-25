@@ -244,7 +244,7 @@ def message():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': findSongDf.loc[0, 'sond_name']
+                        'text': findSongDf.iloc[0,3]  # song_name 출력 
                     }
                 }]
             }
