@@ -6,22 +6,22 @@ app = Flask(__name__)
 
 a = 0
 
-model = Word2Vec.load('/home/ubuntu/watermelon/song2vec/song2vec.model')
+# model = Word2Vec.load('/home/ubuntu/watermelon/song2vec/song2vec.model')
 
-songDf = pd.read_json('/home/ubuntu/watermelon/data/song_meta.json')
+# songDf = pd.read_json('/home/ubuntu/watermelon/data/song_meta.json')
 
-genreDf = pd.read_json('/home/ubuntu/watermelon/data/genre_gn_all.json')
-genreDfIndex = list(genreDf.index)
-genreNameList = genreDf['genre'].tolist()
+# genreDf = pd.DataFrame(pd.read_json('/home/ubuntu/watermelon/data/genre_gn_all.json', encoding='utf-8', typ='series'), columns=['genre'])
+# genreDfIndex = list(genreDf.index)
+# genreNameList = genreDf['genre'].tolist()
 
-playlistDf = pd.read_json('/home/ubuntu/watermelon/data/train.json')
+# playlistDf = pd.read_json('/home/ubuntu/watermelon/data/train.json')
 
-# tag
-tag = []
-for i in playlistDf.tags :
-    tag += i
+# # tag
+# tag = []
+# for i in playlistDf.tags :
+#     tag += i
     
-tagUnique = list(set(tag))
+# tagUnique = list(set(tag))
 
 @app.route("/selectMode")
 def selectMode() :
