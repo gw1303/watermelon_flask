@@ -174,12 +174,12 @@ def getSongId() :
 def hello():
     
     global a
-    global songDf
+
 
     a += 1
 
 
-    return str(a) + songDf['song_name'][a]
+    return str(a) 
 
 @app.route("/message", methods=['POST'])
 def message():
