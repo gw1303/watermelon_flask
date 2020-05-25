@@ -296,6 +296,8 @@ def message():
             }
         }
 
+        return jsonify(res)
+
     else:
         res = {
             'version': "2.0",
