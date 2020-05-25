@@ -24,7 +24,7 @@ songDf = pd.read_json(dataPath + 'song_meta.json')
 
 def loadUser(userId):
     try:
-        with open(f'{userId}.bin', 'rb') as f:
+        with open(f'users/{userId}.bin', 'rb') as f:
             user = pickle.load(f) # 
             return user
     except FileNotFoundError:
@@ -36,7 +36,7 @@ def loadUser(userId):
 
 def saveUser(userId, user):
     try:
-        with open(f'{userId}.bin', 'wb') as f:
+        with open(f'users/{userId}.bin', 'wb') as f:
             pickle.dump(user, f)
         return True
     except:
