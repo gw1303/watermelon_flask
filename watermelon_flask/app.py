@@ -261,6 +261,8 @@ def message():
 
         saaList = []
         txt = ''
+        quickReplies = []
+
         for i in range(7) :  # len(findSongDf)
 
             song = findSongDf.iloc[i].song_name
@@ -268,8 +270,13 @@ def message():
             album = findSongDf.iloc[i].album_name
             # saaList.append([song, artist, album])
 
-            txt += '{}번 {} - {} / {}\n'.format((i+1), artist, song, album)  # song_name 출력 
+            txt += '{}번 {} - {} / {}\n\n'.format((i+1), artist, song, album)  # song_name 출력 
              
+            quickReplies. append({
+                    'label': str(i+1),
+                    'action': 'message',
+                    'messageText': str(i+1)})
+
         res = {
                 'version': "2.0",
                 'template': {
@@ -277,9 +284,10 @@ def message():
                         'simpleText': {
                             'text': txt  # song_name 출력 
                         }
-                    }]
+                    }],
+                    'quickReplies': quickReplies  # 몇번째 노래 ? 
+                    }
                 }
-            }
 
         return jsonify(res)
 
