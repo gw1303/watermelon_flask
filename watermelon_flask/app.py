@@ -301,8 +301,8 @@ def message():
                         'label': str(i+1),
                         'action': 'message',
                         'messageText': str(songId),
-                        # 'blockId' : '5ecb168c031ba400011698b3',
-                        # 'extra' : str(songId),
+                        'blockId' : '5ecb168c031ba400011698b3',
+                        'extra' : {'songId':str(songId)},
                         })
 
             res = {
