@@ -31,7 +31,7 @@ class Song2Vec():
 
     def getCosSimilar(self, items, typIdx, typSets):
         res = []
-        iset = itemToIdx(items, typIdx)
+        iset = self.itemToIdx(items, typIdx)
         for s in typSets:
             if len(s):
                 res.append(len(iset & s)/(np.sqrt(len(s))*np.sqrt(len(iset))))
@@ -47,19 +47,19 @@ class Song2Vec():
         if songs:
             songVec += self.model.wv[[str(song) for song in songs]].mean(axis=0)
         if tags:
-            cos = getCosSimilar(tags, self.tagIdx, self.tagSets)
+            cos = self.getCosSimilar(tags, self.tagIdx, self.tagSets)
             totalsim = 0
             for i in cos.argsort()[-nTags:]:    
-                vec = self.model.wv[[str(song) for song in playList.loc[i, 'songs']]].mean(axis=0)
+                vec = self.model.wv[[str(song) for song in self.playList.loc[i, 'songs']]].mean(axis=0)
                 tagVec += cos[i]*vec
                 totalsim += cos[i]
             tagVec /= totalsim
 
         if genres:
-            cos = getCosSimilar(genres, self.genreIdx, self.genreSets)
+            cos = self.getCosSimilar(genres, self.genreIdx, self.genreSets)
             totalsim = 0
             for i in cos.argsort()[-nGenres:]:    
-                vec = self.model.wv[[str(song) for song in playList.loc[i, 'songs']]].mean(axis=0)
+                vec = self.model.wv[[str(song) for song in self.playList.loc[i, 'songs']]].mean(axis=0)
                 genreVec += cos[i]*vec
                 totalsim += cos[i]
             genreVec /= totalsim
