@@ -3,6 +3,7 @@ from gensim.models import Word2Vec
 import pandas as pd
 from song2vec import Song2Vec
 import sys
+import pickle
 
 app = Flask(__name__)
 
@@ -19,6 +20,23 @@ model = Song2Vec(path=modelPath)
 
 
 songDf = pd.read_json(dataPath + 'song_meta.json')
+
+
+def loadUser(self, userId):
+    try:
+        with open(f'{userId}.bin', 'rb') as f:
+            user = pickle.load(f) # 
+            return user
+    except:
+        return False
+
+def saveUser(self, userId, user):
+    try:
+        with open(f'{userId}.bin', 'wb') as f:
+            pickle.dump(user, f)
+        return True
+    except:
+        return False
 
 
 # genreDf = pd.DataFrame(pd.read_json(dataPath + 'genre_gn_all.json', encoding='utf-8', typ='series'), columns=['genre'])
