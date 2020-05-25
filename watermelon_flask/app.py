@@ -292,7 +292,7 @@ def addMusic():
         'template': {
             'outputs': [{
                 'simpleText': {
-                    'text': '무엇을 하시겠습니까 ?'
+                    'text': f'playlist : {user['myPlaylist']}'# '무엇을 하시겠습니까 ?'
                 }
             }],
                 'quickReplies': [{
