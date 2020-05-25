@@ -260,7 +260,7 @@ def message():
 def addMusic() :
     req = request.get_json()
     songId = req['action']['clientExtra']['songId']
-    songId = str(songId)
+    songId = str(songId).strip()
 
     userId = req['userRequest']['user']['id']
     userId = str(userId)
