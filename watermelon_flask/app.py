@@ -17,7 +17,6 @@ if len(sys.argv)>1 and sys.argv[1] == 'dev':
 
 model = Song2Vec(path=modelPath)
 
-# model = Word2Vec.load('/home/ubuntu/watermelon/song2vec/song2vec.model')
 
 songDf = pd.read_json(dataPath + 'song_meta.json')
 
@@ -104,25 +103,25 @@ songDf = pd.read_json(dataPath + 'song_meta.json')
 
 
     
-#     userSelect = 999999999
+    # userSelect = 999999999
     
-#     # 검색된 노래가 2개 이상일 경우 선택받는다
-#     if len(findSongDf) > 1 :
+    # # 검색된 노래가 2개 이상일 경우 선택받는다
+    # if len(findSongDf) > 1 :
         
-#         # 길이순 재 정렬
-#         idx = findSongDf['song_name'].str.len().sort_values().index
-#         findSongDf = findSongDf.reindex(idx)
+    #     # 길이순 재 정렬
+    #     idx = findSongDf['song_name'].str.len().sort_values().index
+    #     findSongDf = findSongDf.reindex(idx)
             
-#         print('무슨 노래입니까 ?', end='\n\n')
+    #     print('무슨 노래입니까 ?', end='\n\n')
 
-#         saaList = []
+    #     saaList = []
 
-#         for i in range(5) :  # len(findSongDf)
+    #     for i in range(5) :  # len(findSongDf)
 
-#             song = findSongDf.iloc[i].song_name
-#             artist = findSongDf.iloc[i].artist_name_basket
-#             album = findSongDf.iloc[i].album_name
-#             saaList.append([aong, artist, album])
+    #         song = findSongDf.iloc[i].song_name
+    #         artist = findSongDf.iloc[i].artist_name_basket
+    #         album = findSongDf.iloc[i].album_name
+    #         saaList.append([aong, artist, album])
         
 #         res = {
 #             'version': "2.0",
@@ -250,15 +249,32 @@ def message():
             findSongDf = findArtistDf[findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())]
         else :
             findSongDf = findArtistDf
-            
-        r = findSongDf.iloc[0,3]
+
+    userSelect = 999999999
+    
+    # 검색된 노래가 2개 이상일 경우 선택받는다
+    if len(findSongDf) > 1 :
+        
+        # 길이순 재 정렬
+        idx = findSongDf['song_name'].str.len().sort_values().index
+        findSongDf = findSongDf.reindex(idx)
+
+        saaList = []
+
+        for i in range(5) :  # len(findSongDf)
+
+            song = findSongDf.iloc[i].song_name
+            artist = findSongDf.iloc[i].artist_name_basket
+            album = findSongDf.iloc[i].album_name
+            saaList.append([aong, artist, album])
+
 
         res = {
             'version': "2.0",
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': str(r)  # song_name 출력 
+                        'text': str(saaList)  # song_name 출력 
                     }
                 }]
             }
