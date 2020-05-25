@@ -278,7 +278,7 @@ def message():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': f'My playlist : {myPlaylist}'
+                        'text': f'플레이리스트가 삭제되었습니다.\n\nMy playlist : {myPlaylist}'
                     }
                 }],
                 'quickReplies': [{
@@ -334,7 +334,7 @@ def addMusic():
         'template': {
             'outputs': [{
                 'simpleText': {
-                    'text': f'My playlist : {myPlaylist}'# '무엇을 하시겠습니까 ?'
+                    'text': f'노래가 추가되었습니다.\n\nMy playlist : {myPlaylist}'# '무엇을 하시겠습니까 ?'
                 }
             }],
                 'quickReplies': [{
