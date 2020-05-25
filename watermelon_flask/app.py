@@ -191,8 +191,8 @@ def hello():
 @app.route("/block", methods=['POST'])
 def block():
     req = request.get_json()
-    return_str = req['userRequest']['block']['id']
-    return_str = str(return_str).strip()
+    return_str = req['userRequest']
+    return_str = str(return_str)
 
     
     res = {
