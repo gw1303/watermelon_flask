@@ -183,6 +183,9 @@ def message():
     return_str = req['userRequest']['utterance']
     return_str = str(return_str).strip()
 
+    # 필요한 변수들 
+    global songDf
+
     if return_str == '시작':
         res = {
             'version': "2.0",
@@ -225,7 +228,6 @@ def message():
 
     elif return_str.find('-') != -1 :
 
-        global songDf
 
         artist, song = return_str.split('-')
         # 입력받은 가수와 제목으로 df 구성
