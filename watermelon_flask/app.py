@@ -226,11 +226,6 @@ def message():
         user = loadUser(userId)
 
         pred = model.getRecommendation(songs=user['myPlaylist'])
-        songs = ''
-        for sid, prob in pred:
-            songs += findSongById(sid) + '\n'
-
-        txt = ''
 
         for songId, prop in  pred :
     
