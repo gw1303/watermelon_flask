@@ -183,36 +183,61 @@ def message():
 
         txt = '몇번째 음악을 추가하시겠습니까?\n\n'
         quickReplies = []
+        if len(findSongDf) > 1 :
+            for i in range(len(findSongDf)):
 
-        for i in range(len(findSongDf)):
+                song = findSongDf.iloc[i].song_name
+                artist = findSongDf.iloc[i].artist_name_basket
+                album = findSongDf.iloc[i].album_name
+                songId = findSongDf.iloc[i].name
 
-            song = findSongDf.iloc[i].song_name
-            artist = findSongDf.iloc[i].artist_name_basket
-            album = findSongDf.iloc[i].album_name
-            songId = findSongDf.iloc[i].name
+                txt += '{}번 {} - {} / {}\n\n'.format((i + 1), artist, song, album)  # song_name 출력
 
-            txt += '{}번 {} - {} / {}\n\n'.format((i + 1), artist, song, album)  # song_name 출력
+                quickReplies.append({
+                    'label': str(i + 1),
+                    'action': 'block',
+                    'messageText': f'{i + 1}번 노래가 추가되었습니다.',
+                    'blockId': '5ecb168c031ba400011698b3',
+                    'extra': {'songId': str(songId)},
+                })
 
-            quickReplies.append({
-                'label': str(i + 1),
-                'action': 'block',
-                'messageText': f'{i + 1}번 노래가 추가되었습니다.',
-                'blockId': '5ecb168c031ba400011698b3',
-                'extra': {'songId': str(songId)},
-            })
+                if i == 9:
+                    break
 
-            if i == 9:
-                break
+            res = {
+                'version': "2.0",
+                'template': {
+                    'outputs': [{
+                        'simpleText': {
+                            'text': txt  # song_name 출력
+                        }
+                    }],
+                    'quickReplies': quickReplies  # 몇번째 노래 ?
+                }
+            }
 
-        res = {
+            return jsonify(res)
+
+        else : 
+            res = {
             'version': "2.0",
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': txt  # song_name 출력
+                        'text': '원하시는 음악을 찾을 수 없습니다.'
                     }
                 }],
-                'quickReplies': quickReplies  # 몇번째 노래 ?
+                'quickReplies': [{
+                    'label': '음악추가',
+                    'action': 'message',
+                    'messageText': '음악추가',
+                },
+                {
+                    'label': '돌아가기',
+                    'action': 'message',
+                    'messageText': '시작',
+
+                }]
             }
         }
 
