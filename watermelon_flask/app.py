@@ -214,13 +214,39 @@ def message():
     return_str = req['userRequest']['utterance']
     return_str = str(return_str).strip()
 
-    if return_str == '노래추가':
+    if return_str == '시작':
         res = {
             'version': "2.0",
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': '노래추가 페이지'
+                        'text': '무엇을 하시겠습니까 ?'
+                    }
+                }],
+                'quickReplies': [{
+                    'label': '음악추가',
+                    'action': 'message',
+                    'messageText': '음악추가',
+
+                },
+                {
+                    'label': '음악추천',
+                    'action': 'message',
+                    'messageText': '음악추천',
+
+                }]
+            }
+        }
+
+        return jsonify(res)
+        
+    if return_str == '음악추가':
+        res = {
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': '음악추가 페이지'
                     }
                 }],
                 'quickReplies': [{
@@ -233,7 +259,7 @@ def message():
         }
 
         return jsonify(res)
-        
+
     elif return_str == '음악추천':
         res = {
             'version': "2.0",
