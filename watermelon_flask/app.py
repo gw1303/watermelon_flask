@@ -1,20 +1,30 @@
 from flask import Flask, request, json, jsonify
 from gensim.models import Word2Vec
 import pandas as pd
+from watermelon_flask.song2vec import Song2Vec
+import sys
 
 app = Flask(__name__)
 
 
+modelPath = '/home/ubuntu/watermelon/song2vec/'
+dataPath  = '/home/ubuntu/watermelon/data/'
+
+
+if sys.argv[1] == 'dev':
+    modelPath = 'C:/Users/student/Downloads/melon/'
+    dataPath  = 'C:/Users/student/Downloads/melon/'
+
+model = Song2Vec(path=modelPath)
 
 # model = Word2Vec.load('/home/ubuntu/watermelon/song2vec/song2vec.model')
 
-songDf = pd.read_json('/home/ubuntu/watermelon/data/song_meta.json')
+songDf = pd.read_json(dataPath + 'song_meta.json')
 
-# genreDf = pd.DataFrame(pd.read_json('/home/ubuntu/watermelon/data/genre_gn_all.json', encoding='utf-8', typ='series'), columns=['genre'])
+# genreDf = pd.DataFrame(pd.read_json(dataPath + 'genre_gn_all.json', encoding='utf-8', typ='series'), columns=['genre'])
 # genreDfIndex = list(genreDf.index)
 # genreNameList = genreDf['genre'].tolist()
-
-# playlistDf = pd.read_json('/home/ubuntu/watermelon/data/train.json')
+# playlistDf = pd.read_json(dataPath +'train.json')
 
 # # tag
 # tag = []
@@ -273,4 +283,7 @@ def message():
 
 # 메인 함수
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, threaded=True)
+    if sys.argv[1] == 'dev':
+        app.run(debug=True)
+    else:
+        app.run(host='0.0.0.0', port=5000, threaded=True)
