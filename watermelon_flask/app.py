@@ -254,48 +254,51 @@ def message():
         else :
             findSongDf = findArtistDf
 
-    userSelect = 999999999
-    
-    # 검색된 노래가 2개 이상일 경우 선택받는다
-    if len(findSongDf) > 1 :
+        userSelect = 999999999
         
-        # 길이순 재 정렬
-        idx = findSongDf['song_name'].str.len().sort_values().index
-        findSongDf = findSongDf.reindex(idx)
+        # 검색된 노래가 2개 이상일 경우 선택받는다
+        if len(findSongDf) > 1 :
+            
+            # 길이순 재 정렬
+            idx = findSongDf['song_name'].str.len().sort_values().index
+            findSongDf = findSongDf.reindex(idx)
 
-        saaList = []
-        txt = ''
-        quickReplies = []
+            saaList = []
+            txt = ''
+            quickReplies = []
 
-        for i in range(7) :  # len(findSongDf)
+            for i in range(7) :  # len(findSongDf)
 
-            song = findSongDf.iloc[i].song_name
-            artist = findSongDf.iloc[i].artist_name_basket
-            album = findSongDf.iloc[i].album_name
-            songId = findSongDf.iloc[i].name
-            # saaList.append([song, artist, album])
+                song = findSongDf.iloc[i].song_name
+                artist = findSongDf.iloc[i].artist_name_basket
+                album = findSongDf.iloc[i].album_name
+                songId = findSongDf.iloc[i].name
+                # saaList.append([song, artist, album])
 
-            txt += '{}번 {} - {} / {}\n\n'.format((i+1), artist, song, album)  # song_name 출력 
-             
-            quickReplies. append({
-                    'label': str(i+1),
-                    'action': 'message',
-                    'messageText': str(i+1),
-                    'extra' : str(songId)})
+                txt += '{}번 {} - {} / {}\n\n'.format((i+1), artist, song, album)  # song_name 출력 
+                 
+                quickReplies. append({
+                        'label': str(i+1),
+                        'action': 'message',
+                        'messageText': str(i+1),
+                        })
 
-        res = {
-                'version': "2.0",
-                'template': {
-                    'outputs': [{
-                        'simpleText': {
-                            'text': txt  # song_name 출력 
+            res = {
+                    'version': "2.0",
+                    'template': {
+                        'outputs': [{
+                            'simpleText': {
+                                'text': txt  # song_name 출력 
+                            }
+                        }],
+                        'quickReplies': quickReplies  # 몇번째 노래 ? 
                         }
-                    }],
-                    'quickReplies': quickReplies  # 몇번째 노래 ? 
                     }
-                }
 
-        return jsonify(res)
+            return jsonify(res)
+
+        # else : 
+
 
 
     elif return_str == '음악추천':
