@@ -302,7 +302,7 @@ def message():
                         'action': 'message',
                         'messageText': str(songId),
                         # 'blockId' : '5ecb168c031ba400011698b3',
-                        'extra' : str(songId),
+                        # 'extra' : str(songId),
                         })
 
             res = {
