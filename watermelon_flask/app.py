@@ -228,8 +228,8 @@ def message():
 
     elif return_str.find('-') != -1 :
 
-
         artist, song = return_str.split('-')
+
         # 입력받은 가수와 제목으로 df 구성
         findArtistDf = songDf[songDf.artist_name_basket.str.contains(artist.strip())].sort_values(by='song_name')
         
@@ -244,7 +244,7 @@ def message():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': findSongDf['song_name'][0]
+                        'text': findSongDf.loc[0, 'sond_name']
                     }
                 }]
             }
