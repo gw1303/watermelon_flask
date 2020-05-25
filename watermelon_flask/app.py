@@ -227,6 +227,8 @@ def message():
 
         pred = model.getRecommendation(songs=user['myPlaylist'])
 
+        txt = ''
+
         for songId, prop in  pred :
     
             song = songDf.iloc[int(songId)]['song_name']
