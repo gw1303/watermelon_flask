@@ -254,9 +254,9 @@ def addMusic() :
     userId = req['userRequest']['user']['id']
     userId = str(userId)
 
-    # user = loadUser()
-    # user['myPlaylist'].append(songId)
-    # saveUser(userId, user)
+    user = loadUser(userId)
+    user['myPlaylist'].append(songId)
+    saveUser(userId, user)
 
 
     res = {
@@ -264,7 +264,7 @@ def addMusic() :
         'template': {
             'outputs': [{
                 'simpleText': {
-                    'text': userId
+                    'text': '추가하실 노래를 \n가수 - 제목\n형식으로 입력해주세요'
                 }
             }]
         }
