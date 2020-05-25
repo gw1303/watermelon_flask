@@ -1,9 +1,15 @@
 from flask import Flask, request, json, jsonify
 from gensim.models import Word2Vec
 import pandas as pd
+from watermelon_flask.song2vec import Song2Vec
+
 
 app = Flask(__name__)
 
+
+
+modelPath = '/home/ubuntu/watermelon/song2vec/'
+model = Song2Vec(path=modelPath)
 
 
 # model = Word2Vec.load('/home/ubuntu/watermelon/song2vec/song2vec.model')
