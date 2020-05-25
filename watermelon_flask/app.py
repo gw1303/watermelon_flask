@@ -177,7 +177,7 @@ def message():
         idx = findSongDf['song_name'].str.len().sort_values().index
         findSongDf = findSongDf.reindex(idx)
 
-        txt = '몇번째 음악을 추가하시겠습니까?\n'
+        txt = '몇번째 음악을 추가하시겠습니까?\n\n'
         quickReplies = []
 
         for i in range(len(findSongDf)) :  
@@ -248,9 +248,15 @@ def message():
 @app.route("/addMusic", methods=['POST'])
 def addMusic() :
     req = request.get_json()
-    return_str = req['action']['clientExtra']['songId']
-    return_str = str(return_str)
+    songId = req['action']['clientExtra']['songId']
+    songId = str(songId)
 
+    userId = req['userRequest']['user']['id']
+    userId = str(userId)
+
+    # user = loadUser()
+    # user['myPlaylist'].append(songId)
+    # saveUser(userId, user)
 
 
     res = {
@@ -258,7 +264,7 @@ def addMusic() :
         'template': {
             'outputs': [{
                 'simpleText': {
-                    'text': str(return_str)
+                    'text': userId
                 }
             }]
         }
