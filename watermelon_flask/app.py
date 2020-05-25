@@ -38,6 +38,32 @@ def saveUser(self, userId, user):
     except:
         return False
 
+def makeQuickReply(outputText, labels, action, messages=None, blockId=None, extra=None):
+    res = {
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f'{outputText}'
+                    }
+                }],
+                'quickReplies': []                            
+            }
+        }
+    
+    for i in range(len(labels)):
+        item = {
+            'label'  : labels[i],
+            'action' : action,
+            'messageText' : messages[i] if messages else labels[i]
+        }
+        if action == 'block':
+            item['blockId'] = blockId
+        if extra:
+            item['extra'] = extra[i]
+        res['template']['quickReplies'].append(item)
+
+    return res
 
 # genreDf = pd.DataFrame(pd.read_json(dataPath + 'genre_gn_all.json', encoding='utf-8', typ='series'), columns=['genre'])
 # genreDfIndex = list(genreDf.index)
