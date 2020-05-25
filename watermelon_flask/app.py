@@ -223,12 +223,19 @@ def message():
 
 
     elif return_str == '음악추천':
+        req = request.get_json()
+        userId = req['userRequest']['user']['id']
+        userId = str(userId)
+        user = loadUser(userId)
+
+        pred = model.getRecommendation(songs=user['myPlaylist'])
+
         res = {
             'version': "2.0",
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': '음악추천 페이지'
+                        'text': str(pred)
                     }
                 }]
             }
@@ -260,7 +267,6 @@ def addMusic() :
 
     user = loadUser(userId)
     user['myPlaylist'].append(songId)
-    print(saveUser(userId, user))
     
 
     res = {
