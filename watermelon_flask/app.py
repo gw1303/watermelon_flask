@@ -337,7 +337,7 @@ def message():
 
         return jsonify(res)
 
-@app.route("/addMusic", methods=['POST'])
+@app.route("/addMusic", methods=['GET'])
 def addMusic() :
     req = request.get_json()
     # return_str = req['action']['clientExtra']
