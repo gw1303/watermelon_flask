@@ -22,15 +22,19 @@ model = Song2Vec(path=modelPath)
 songDf = pd.read_json(dataPath + 'song_meta.json')
 
 
-def loadUser(self, userId):
+def loadUser(userId):
     try:
         with open(f'{userId}.bin', 'rb') as f:
             user = pickle.load(f) # 
             return user
+    except FileNotFoundError:
+        user = {'userId': userId, 'myPlaylist':[]}        
+        return user
     except:
         return False
+    
 
-def saveUser(self, userId, user):
+def saveUser(userId, user):
     try:
         with open(f'{userId}.bin', 'wb') as f:
             pickle.dump(user, f)
