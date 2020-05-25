@@ -237,14 +237,14 @@ def message():
         #     findSongDf = findArtistDf[findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())]
         # else :
         #     findSongDf = findArtistDf
-
+        r = songDf.iloc[0,3]
 
         res = {
             'version': "2.0",
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': songDf.iloc[0,3]  # song_name 출력 
+                        'text': str(r)  # song_name 출력 
                     }
                 }]
             }
