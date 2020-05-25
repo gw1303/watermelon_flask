@@ -8,11 +8,14 @@ app = Flask(__name__)
 a = 0
 
 if sys.argv[1] == 'dev':
-    model = None
-
+    modelPath = 'C:/Users/student/Downloads/melon/song2vec-fastload.bin'
+    metaPath = 'C:/Users/student/Downloads/melon/song_meta.json'
 else:
-    model = Word2Vec.load('/home/ubuntu/watermelon/song2vec/song2vec.model')
-    songDf = pd.read_json('/home/ubuntu/watermelon/data/song_meta.json')
+    modelPath = '/home/ubuntu/watermelon/song2vec/song2vec.model'
+    metaPath = '/home/ubuntu/watermelon/data/song_meta.json'
+
+model = Word2Vec.load(modelPath)
+songDf = pd.read_json(metaPath)
 
 @app.route("/")
 def hello():
