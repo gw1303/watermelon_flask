@@ -1,7 +1,7 @@
 from gensim.models import KeyedVectors
 import pickle
 import numpy as np
-
+import pandas as pd 
 
 
 class Song2Vec():
@@ -11,13 +11,15 @@ class Song2Vec():
         self.tagIdx = {}
         self.genreSets = {}
         self.genreIdx = {}
+        self.playList = None
 
         if path:
-            self.model = KeyedVectors.load(path)
+            self.model = KeyedVectors.load(path + 'song2vec-fastload.bin', mmap='r')
             self.tagSets = self.loadData(path + 'tagSets.bin')
             self.tagIdx  = self.loadData(path + 'tagIdx.bin')
             self.genreSets  = self.loadData(path + 'genreSets.bin')
             self.genreIdx   = self.loadData(path + 'genreIdx.bin')
+            self.playList = pd.read_pickle(path + 'playList.bin')
     
     def loadData(self, path):
         with open(path, 'rb') as f:
@@ -43,24 +45,25 @@ class Song2Vec():
         genreVec = np.zeros(shape=(100,))
 
         if songs:
-            songVec += song2vec.wv[[str(song) for song in songs]].mean(axis=0)
+            songVec += self.model.wv[[str(song) for song in songs]].mean(axis=0)
         if tags:
-            cos = getCosSimilar(tags, tagIdx, tagSets)
+            cos = getCosSimilar(tags, self.tagIdx, self.tagSets)
             totalsim = 0
             for i in cos.argsort()[-nTags:]:    
-                vec = song2vec.wv[[str(song) for song in train.loc[i, 'songs']]].mean(axis=0)
+                vec = self.model.wv[[str(song) for song in playList.loc[i, 'songs']]].mean(axis=0)
                 tagVec += cos[i]*vec
                 totalsim += cos[i]
             tagVec /= totalsim
 
         if genres:
-            cos = getCosSimilar(genres, genreIdx, genreSets)
+            cos = getCosSimilar(genres, self.genreIdx, self.genreSets)
             totalsim = 0
             for i in cos.argsort()[-nGenres:]:    
-                vec = song2vec.wv[[str(song) for song in train.loc[i, 'songs']]].mean(axis=0)
+                vec = self.model.wv[[str(song) for song in playList.loc[i, 'songs']]].mean(axis=0)
                 genreVec += cos[i]*vec
                 totalsim += cos[i]
             genreVec /= totalsim
-        topN = song2vec.similar_by_vector(songVec+tagVec+genreVec)
+
+        topN = self.model.similar_by_vector(songVec+tagVec+genreVec)
 
         return topN   
