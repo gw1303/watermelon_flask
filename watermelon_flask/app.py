@@ -287,6 +287,8 @@ def addMusic():
     user = loadUser(userId)
     user['myPlaylist'].append(songId)
 
+    myPlaylist = user['myPlaylist']
+
     saveUser(userId)
     
     res = {
@@ -294,7 +296,7 @@ def addMusic():
         'template': {
             'outputs': [{
                 'simpleText': {
-                    'text': f'My playlist : {user['myPlaylist']}'# '무엇을 하시겠습니까 ?'
+                    'text': f'My playlist : {myPlaylist}'# '무엇을 하시겠습니까 ?'
                 }
             }],
                 'quickReplies': [{
