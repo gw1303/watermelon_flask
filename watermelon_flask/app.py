@@ -260,7 +260,7 @@ def message():
         findSongDf = findSongDf.reindex(idx)
 
         saaList = []
-
+        txt = ''
         for i in range(7) :  # len(findSongDf)
 
             song = findSongDf.iloc[i].song_name
@@ -268,19 +268,20 @@ def message():
             album = findSongDf.iloc[i].album_name
             # saaList.append([song, artist, album])
 
-
-            res = {
+            txt += '{}번 {} - {} / {}\n'.format((i+1), artist, song, album)  # song_name 출력 
+             
+        res = {
                 'version': "2.0",
                 'template': {
                     'outputs': [{
                         'simpleText': {
-                            'text': '{}번 {} - {} / {}'.format((i+1), artist, song, album)  # song_name 출력 
+                            'text': txt  # song_name 출력 
                         }
                     }]
                 }
             }
 
-            return jsonify(res)
+        return jsonify(res)
 
 
     elif return_str == '음악추천':
