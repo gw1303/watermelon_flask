@@ -170,7 +170,7 @@ def message():
 
         # 입력받은 가수와 제목으로 df 구성
 
-        findArtistDf = songDf[songDf.artist_name_basket.str.contains(artist.replace(' ', '').lower())].sort_values(by='song_name')
+        findArtistDf = songDf[songDf.artist_name_basket.str.replace(' ', '').str.contains(artist.replace(' ', '').lower())].sort_values(by='song_name')
         
         if len(findArtistDf.song_name.str.replace(' ', '').str.contains(song.replace(' ', '').lower())) > 0 :
             findSongDf = findArtistDf[findArtistDf.song_name.str.replace(' ', '').str.contains(song.replace(' ', '').lower())]
