@@ -282,7 +282,7 @@ def message():
                     'action': 'block',
                     'messageText': str(i+1),
                     'blockId' : 'add_music',
-                    'extra' : songId})
+                    'extra' : str(songId)})
 
         res = {
                 'version': "2.0",
