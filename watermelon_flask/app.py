@@ -169,10 +169,10 @@ def message():
         artist, song = return_str.split('-')
 
         # 입력받은 가수와 제목으로 df 구성
-        findArtistDf = songDf[songDf.artist_name_basket.str.contains(artist.strip())].sort_values(by='song_name')
+        findArtistDf = songDf[songDf.artist_name_basket.str.contains(artist.strip().lower())].sort_values(by='song_name')
         
-        if len(findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())) > 0 :
-            findSongDf = findArtistDf[findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())]
+        if len(findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip().lower())) > 0 :
+            findSongDf = findArtistDf[findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip().lower())]
         else :
             findSongDf = findArtistDf
 
@@ -219,9 +219,6 @@ def message():
         return jsonify(res)
 
 
-
-
-
     elif return_str == '음악추천':
         req = request.get_json()
         userId = req['userRequest']['user']['id']
@@ -230,13 +227,33 @@ def message():
 
         pred = model.getRecommendation(songs=user['myPlaylist'])
 
+        txt = ''
+
+        for songId, prop in  pred :
+    
+            song = songDf.iloc[int(songId)]['song_name']
+            artist = songDf.iloc[int(songId)]['artist_name_basket']
+            
+            txt += f'{song} - {artist} / {round(prop*100, 1)}%\n\n'
+
         res = {
             'version': "2.0",
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': str(pred)
+                        'text': txt
                     }
+                }],
+                'quickReplies': [{
+                    'label': '음악추가',
+                    'action': 'message',
+                    'messageText': '음악추가',
+                },
+                {
+                    'label': '돌아가기',
+                    'action': 'message',
+                    'messageText': '시작',
+
                 }]
             }
         }
@@ -274,9 +291,18 @@ def addMusic() :
         'template': {
             'outputs': [{
                 'simpleText': {
-                    'text': '추가하실 노래를 \n가수 - 제목\n형식으로 입력해주세요'
+                    'text': '무엇을 하시겠습니까 ?'
                 }
-            }]
+            }],
+                'quickReplies': [{
+                    'label': '음악추가',
+                    'action': 'message',
+                    'messageText': '음악추가',
+                },{
+                    'label': '음악추천',
+                    'action': 'message',
+                    'messageText': '음악추천',
+                }]
         }
     }
 
