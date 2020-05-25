@@ -1,14 +1,18 @@
 from flask import Flask, request, json, jsonify
 from gensim.models import Word2Vec
 import pandas as pd
+import sys
 
 app = Flask(__name__)
 
 a = 0
 
-model = Word2Vec.load('/home/ubuntu/watermelon/song2vec/song2vec.model')
+if sys.argv[1] == 'dev':
+    model = None
 
-songDf = pd.read_json('/home/ubuntu/watermelon/data/song_meta.json')
+else:
+    model = Word2Vec.load('/home/ubuntu/watermelon/song2vec/song2vec.model')
+    songDf = pd.read_json('/home/ubuntu/watermelon/data/song_meta.json')
 
 @app.route("/")
 def hello():
@@ -49,4 +53,7 @@ def message():
 
 # 메인 함수
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, threaded=True)
+    if sys.argv[1] == 'dev':
+        app.run(debug=True)
+    else:
+        app.run(host='0.0.0.0', port=5000, threaded=True)
