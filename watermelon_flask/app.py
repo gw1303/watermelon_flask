@@ -20,6 +20,8 @@ model = Song2Vec(path=modelPath)
 
 songDf = pd.read_json(dataPath + 'song_meta.json')
 
+myPlaylist = []
+
 # genreDf = pd.DataFrame(pd.read_json(dataPath + 'genre_gn_all.json', encoding='utf-8', typ='series'), columns=['genre'])
 # genreDfIndex = list(genreDf.index)
 # genreNameList = genreDf['genre'].tolist()
@@ -197,6 +199,8 @@ def message():
 
     # 필요한 변수들 
     global songDf
+    global myPlaylist
+
 
     if return_str == '시작':
         res = {
@@ -268,14 +272,17 @@ def message():
             song = findSongDf.iloc[i].song_name
             artist = findSongDf.iloc[i].artist_name_basket
             album = findSongDf.iloc[i].album_name
+            songId = findSongDf.iloc[i].name
             # saaList.append([song, artist, album])
 
             txt += '{}번 {} - {} / {}\n\n'.format((i+1), artist, song, album)  # song_name 출력 
              
             quickReplies. append({
                     'label': str(i+1),
-                    'action': 'message',
-                    'messageText': str(i+1)})
+                    'action': 'block',
+                    'messageText': str(i+1),
+                    'blockId' : 'add_music',
+                    'extra' : songId})
 
         res = {
                 'version': "2.0",
