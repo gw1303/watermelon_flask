@@ -20,7 +20,6 @@ model = Song2Vec(path=modelPath)
 
 songDf = pd.read_json(dataPath + 'song_meta.json')
 
-myPlaylist = []
 
 # genreDf = pd.DataFrame(pd.read_json(dataPath + 'genre_gn_all.json', encoding='utf-8', typ='series'), columns=['genre'])
 # genreDfIndex = list(genreDf.index)
@@ -279,8 +278,10 @@ def message():
                  
                 quickReplies. append({
                         'label': str(i+1),
-                        'action': 'message',
+                        'action': 'block',
                         'messageText': str(i+1),
+                        'blockId' : 'add_music',
+                        'extra' : str(songId),
                         })
 
             res = {
