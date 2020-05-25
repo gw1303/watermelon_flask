@@ -41,13 +41,13 @@ def selectMode():
                 }],
                 'quickReplies': [{
                     'label': '노래추가',
-                    'action': 'message',
-                    'messageText': '처음으로'
+                    'action': 'add_music',
+                    'messageText': '노래 추가'
                 },
                     {
                     'label': '추   천',
-                    'action': 'message',
-                    'messageText': '처음으로'
+                    'action': 'recommend',
+                    'messageText': '추천'
                 }]
             }
         }
