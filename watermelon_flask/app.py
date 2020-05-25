@@ -260,8 +260,8 @@ def addMusic() :
 
     user = loadUser(userId)
     user['myPlaylist'].append(songId)
-    saveUser(userId, user)
-
+    print(saveUser(userId, user))
+    
 
     res = {
         'version': "2.0",
