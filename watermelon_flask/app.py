@@ -230,13 +230,13 @@ def message():
 
         artist, song = return_str.split('-')
 
-        # 입력받은 가수와 제목으로 df 구성
-        findArtistDf = songDf[songDf.artist_name_basket.str.contains(artist.strip())].sort_values(by='song_name')
+        # # 입력받은 가수와 제목으로 df 구성
+        # findArtistDf = songDf[songDf.artist_name_basket.str.contains(artist.strip())].sort_values(by='song_name')
         
-        if len(findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())) > 0 :
-            findSongDf = findArtistDf[findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())]
-        else :
-            findSongDf = findArtistDf
+        # if len(findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())) > 0 :
+        #     findSongDf = findArtistDf[findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())]
+        # else :
+        #     findSongDf = findArtistDf
 
 
         res = {
@@ -244,7 +244,7 @@ def message():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': findSongDf.iloc[0,3]  # song_name 출력 
+                        'text': songDf.iloc[0,3]  # song_name 출력 
                     }
                 }]
             }
