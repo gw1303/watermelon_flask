@@ -266,7 +266,7 @@ def message():
             song = findSongDf.iloc[i].song_name
             artist = findSongDf.iloc[i].artist_name_basket
             album = findSongDf.iloc[i].album_name
-            saaList.append([aong, artist, album])
+            saaList.append([song, artist, album])
 
 
         res = {
