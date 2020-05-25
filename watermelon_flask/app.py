@@ -299,7 +299,7 @@ def message():
                  
                 quickReplies. append({
                         'label': str(i+1),
-                        'action': 'message',
+                        'action': 'block',
                         'messageText': f'{i+1}번 노래가 추가되었습니다.',
                         'blockId' : '5ecb168c031ba400011698b3',
                         'extra' : {'songId':str(songId)},
@@ -340,8 +340,8 @@ def message():
 @app.route("/addMusic", methods=['POST'])
 def addMusic() :
     req = request.get_json()
-    # return_str = req['action']['clientExtra']['songId']
-    # return_str = str(return_str)
+    return_str = req['action']['clientExtra']['songId']
+    return_str = str(return_str)
 
     
     res = {
@@ -349,7 +349,7 @@ def addMusic() :
         'template': {
             'outputs': [{
                 'simpleText': {
-                    'text': 'success'
+                    'text': return_str
                 }
             }]
         }
