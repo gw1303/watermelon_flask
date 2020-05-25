@@ -227,9 +227,10 @@ def message():
         userId = req['userRequest']['user']['id']
         userId = str(userId)
         user = loadUser(userId)
-
+        print(user, 'start pred')
         pred = model.getRecommendation(songs=user['myPlaylist'])
-
+        print(pred)
+        print('end pred')
         res = {
             'version': "2.0",
             'template': {
