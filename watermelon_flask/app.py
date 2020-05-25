@@ -260,6 +260,42 @@ def message():
 
         return jsonify(res)
 
+    elif return_str == '플레이리스트삭제' :
+        
+        req = request.get_json()
+        userId = req['userRequest']['user']['id']
+        userId = str(userId).strip()
+        user = loadUser(userId)
+        
+        myPlaylist = []
+
+        user['myPlaylist'] = myPlaylist 
+
+        saveUser(userId, user)
+
+        res = {
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f'My playlist : {myPlaylist}'
+                    }
+                }],
+                'quickReplies': [{
+                    'label': '음악추가',
+                    'action': 'message',
+                    'messageText': '음악추가',
+
+                },
+                {
+                    'label': '음악추천',
+                    'action': 'message',
+                    'messageText': '음악추천',
+
+                }]
+            }
+        }
+
     else:
         res = {
             'version': "2.0",
@@ -307,6 +343,10 @@ def addMusic():
                     'label': '음악추천',
                     'action': 'message',
                     'messageText': '음악추천',
+                },{
+                    'label': '플레이리스트삭제',
+                    'action': 'message',
+                    'messageText': '플레이리스트삭제',
                 }]
         }
     }
