@@ -340,7 +340,7 @@ def message():
 @app.route("/addMusic", methods=['POST'])
 def addMusic() :
     req = request.get_json()
-    return_str = req['action']['clientExtra']['songId']
+    return_str = req['action']['clientExtra']
     return_str = str(return_str)
 
     
