@@ -74,7 +74,6 @@ def message():
 
     # 필요한 변수들 
     global songDf
-    global myPlaylist
 
 
     if return_str == '시작':
@@ -109,7 +108,7 @@ def message():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': '추가하실 노래를 가수 - 제목 형식으로 입력하시오'
+                        'text': '추가하실 노래를 \n가수 - 제목\n형식으로 입력해주세요'
                     }
                 }]
             }
@@ -129,25 +128,20 @@ def message():
         else :
             findSongDf = findArtistDf
 
-        userSelect = 999999999
-        
-
             
         # 길이순 재 정렬
         idx = findSongDf['song_name'].str.len().sort_values().index
         findSongDf = findSongDf.reindex(idx)
 
-        saaList = []
         txt = ''
         quickReplies = []
 
-        for i in range(len(findSongDf)) :  # len(findSongDf)
+        for i in range(len(findSongDf)) :  
 
             song = findSongDf.iloc[i].song_name
             artist = findSongDf.iloc[i].artist_name_basket
             album = findSongDf.iloc[i].album_name
             songId = findSongDf.iloc[i].name
-            # saaList.append([song, artist, album])
 
             txt += '{}번 {} - {} / {}\n\n'.format((i+1), artist, song, album)  # song_name 출력 
              
@@ -194,6 +188,19 @@ def message():
 
         return jsonify(res)
 
+    else : 
+        res = {
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': '올바른 형식으로 다시 입력해주세요.'
+                    }
+                }]
+            }
+        }
+
+        return jsonify(res)
 @app.route("/addMusic", methods=['POST'])
 def addMusic() :
     req = request.get_json()
