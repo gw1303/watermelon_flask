@@ -279,9 +279,8 @@ def message():
              
             quickReplies. append({
                     'label': str(i+1),
-                    'action': 'block',
+                    'action': 'message',
                     'messageText': str(i+1),
-                    'blockId' : 'add_music',
                     'extra' : str(songId)})
 
         res = {
