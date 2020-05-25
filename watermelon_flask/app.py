@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 # model = Word2Vec.load('/home/ubuntu/watermelon/song2vec/song2vec.model')
 
-# songDf = pd.read_json('/home/ubuntu/watermelon/data/song_meta.json')
+songDf = pd.read_json('/home/ubuntu/watermelon/data/song_meta.json')
 
 # genreDf = pd.DataFrame(pd.read_json('/home/ubuntu/watermelon/data/genre_gn_all.json', encoding='utf-8', typ='series'), columns=['genre'])
 # genreDfIndex = list(genreDf.index)
@@ -176,37 +176,6 @@ def hello():
     return 'hello'
 
 
-@app.route("/start", methods=['POST'])
-def start():
-    req = request.get_json()
-    return_str = req['userRequest']['utterance']
-    return_str = str(return_str).strip()
-
-    if return_str == '시작':
-        res = {
-            'version': "2.0",
-            'template': {
-                'outputs': [{
-                    'simpleText': {
-                        'text': '무엇을 하시겠습니까 ?'
-                    }
-                }],
-                'quickReplies': [{
-                    'label': '음악추가',
-                    'action': 'message',
-                    'messageText': '음악추가',
-
-                },
-                {
-                    'label': '음악추천',
-                    'action': 'message',
-                    'messageText': '음악추천',
-
-                }]
-            }
-        }
-
-        return jsonify(res)
 
 @app.route("/message", methods=['POST'])
 def message():
@@ -239,26 +208,68 @@ def message():
         }
 
         return jsonify(res)
-        
+
     if return_str == '음악추가':
         res = {
             'version': "2.0",
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': '음악추가 페이지'
+                        'text': '추가하실 노래를 가수 - 제목 형식으로 입력하시오'
                     }
-                }],
-                'quickReplies': [{
-                    'label': '처음으로',
-                    'action': 'message',
-                    'messageText': '처음으로',
-
                 }]
             }
         }
 
         return jsonify(res)
+
+    elif return_str.find('-') != -1 :
+
+        global songDf
+
+        artist, song = return_str.split('-')
+
+        # 입력받은 가수와 제목으로 df 구성
+        findArtistDf = songDf[songDf.artist_name_basket.str.contains(artist.strip())].sort_values(by='song_name')
+        
+        if len(findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())) > 0 :
+            findSongDf = findArtistDf[findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())]
+        else :
+            findSongDf = findArtistDf
+
+
+        
+        userSelect = 999999999
+        
+        # 검색된 노래가 2개 이상일 경우 선택받는다
+        if len(findSongDf) > 1 :
+            
+            # 길이순 재 정렬
+            idx = findSongDf['song_name'].str.len().sort_values().index
+            findSongDf = findSongDf.reindex(idx)
+
+            saaList = []
+
+            for i in range(5) :  # len(findSongDf)
+
+                song = findSongDf.iloc[i].song_name
+                artist = findSongDf.iloc[i].artist_name_basket
+                album = findSongDf.iloc[i].album_name
+                saaList.append([aong, artist, album])
+
+        res = {
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': str(saaList)
+                    }
+                }]
+            }
+        }
+
+        return jsonify(res)
+
 
     elif return_str == '음악추천':
         res = {
@@ -268,12 +279,6 @@ def message():
                     'simpleText': {
                         'text': '음악추천 페이지'
                     }
-                }],
-                'quickReplies': [{
-                    'label': '처음으로',
-                    'action': 'message',
-                    'messageText': '처음으로',
-
                 }]
             }
         }
