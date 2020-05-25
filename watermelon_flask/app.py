@@ -284,7 +284,7 @@ def message():
 
 # 메인 함수
 if __name__ == '__main__':
-    if sys.argv[1] == 'dev':
+    if len(sys.argv)>1 and sys.argv[1] == 'dev':
         app.run(debug=True)
     else:
         app.run(host='0.0.0.0', port=5000, threaded=True)
