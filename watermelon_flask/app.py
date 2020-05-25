@@ -141,7 +141,7 @@ def message():
         txt = ''
         quickReplies = []
 
-        for i in range(7) :  # len(findSongDf)
+        for i in range(len(findSongDf)) :  # len(findSongDf)
 
             song = findSongDf.iloc[i].song_name
             artist = findSongDf.iloc[i].artist_name_basket
@@ -158,6 +158,9 @@ def message():
                     'blockId' : '5ecb168c031ba400011698b3',
                     'extra' : {'songId':str(songId)},
                     })
+
+            if i == 6 :
+                break
 
         res = {
                 'version': "2.0",
