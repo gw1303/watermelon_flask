@@ -151,7 +151,7 @@ def message():
         idx = findSongDf['song_name'].str.len().sort_values().index
         findSongDf = findSongDf.reindex(idx)
 
-        txt = ''
+        txt = '몇번째 음악을 추가하시겠습니까?\n'
         quickReplies = []
 
         for i in range(len(findSongDf)) :  
@@ -171,7 +171,7 @@ def message():
                     'extra' : {'songId':str(songId)},
                     })
 
-            if i == 6 :
+            if i == 9 :
                 break
 
         res = {
