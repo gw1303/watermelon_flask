@@ -4,7 +4,7 @@ import pandas as pd
 
 app = Flask(__name__)
 
-a = 0
+
 
 # model = Word2Vec.load('/home/ubuntu/watermelon/song2vec/song2vec.model')
 
@@ -173,13 +173,7 @@ a = 0
 @app.route("/")
 def hello():
     
-    global a
-
-
-    a += 1
-
-
-    return str(a) 
+    return 'hello'
 
 @app.route("/message", methods=['POST'])
 def message():
