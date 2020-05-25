@@ -300,7 +300,7 @@ def message():
                 quickReplies. append({
                         'label': str(i+1),
                         'action': 'message',
-                        'messageText': str(songId),
+                        'messageText': f'{i}번 노래가 추가되었습니다.',
                         'blockId' : '5ecb168c031ba400011698b3',
                         'extra' : {'songId':str(songId)},
                         })
