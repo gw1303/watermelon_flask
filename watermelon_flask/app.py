@@ -289,7 +289,7 @@ def addMusic():
 
     myPlaylist = user['myPlaylist']
 
-    saveUser(userId)
+    saveUser(userId, user)
     
     res = {
         'version': "2.0",
