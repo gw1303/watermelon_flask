@@ -19,7 +19,7 @@ class Song2Vec():
             self.tagIdx  = self.loadData(path + 'tagIdx.bin')
             self.genreSets  = self.loadData(path + 'genreSets.bin')
             self.genreIdx   = self.loadData(path + 'genreIdx.bin')
-            self.playList = pd.read_pickle(path + 'playList.bin')
+            self.playList = pd.read_pickle(path + 'playLists.bin')
     
     def loadData(self, path):
         with open(path, 'rb') as f:
