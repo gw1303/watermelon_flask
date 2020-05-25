@@ -229,40 +229,40 @@ def message():
 
         artist, song = return_str.split('-')
 
-        # 입력받은 가수와 제목으로 df 구성
-        findArtistDf = songDf[songDf.artist_name_basket.str.contains(artist.strip())].sort_values(by='song_name')
+        # # 입력받은 가수와 제목으로 df 구성
+        # findArtistDf = songDf[songDf.artist_name_basket.str.contains(artist.strip())].sort_values(by='song_name')
         
-        if len(findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())) > 0 :
-            findSongDf = findArtistDf[findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())]
-        else :
-            findSongDf = findArtistDf
+        # if len(findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())) > 0 :
+        #     findSongDf = findArtistDf[findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())]
+        # else :
+        #     findSongDf = findArtistDf
 
 
         
-        userSelect = 999999999
+        # userSelect = 999999999
         
-        # 검색된 노래가 2개 이상일 경우 선택받는다
-        if len(findSongDf) > 1 :
+        # # 검색된 노래가 2개 이상일 경우 선택받는다
+        # if len(findSongDf) > 1 :
             
-            # 길이순 재 정렬
-            idx = findSongDf['song_name'].str.len().sort_values().index
-            findSongDf = findSongDf.reindex(idx)
+        #     # 길이순 재 정렬
+        #     idx = findSongDf['song_name'].str.len().sort_values().index
+        #     findSongDf = findSongDf.reindex(idx)
 
-            saaList = []
+        #     saaList = []
 
-            for i in range(5) :  # len(findSongDf)
+        #     for i in range(5) :  # len(findSongDf)
 
-                song = findSongDf.iloc[i].song_name
-                artist = findSongDf.iloc[i].artist_name_basket
-                album = findSongDf.iloc[i].album_name
-                saaList.append([aong, artist, album])
+        #         song = findSongDf.iloc[i].song_name
+        #         artist = findSongDf.iloc[i].artist_name_basket
+        #         album = findSongDf.iloc[i].album_name
+        #         saaList.append([aong, artist, album])
 
         res = {
             'version': "2.0",
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': str(saaList)
+                        'text': artist, song
                     }
                 }]
             }
