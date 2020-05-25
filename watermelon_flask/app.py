@@ -1,7 +1,7 @@
 from flask import Flask, request, json, jsonify
 from gensim.models import Word2Vec
 import pandas as pd
-from watermelon_flask.song2vec import Song2Vec
+from song2vec import Song2Vec
 import sys
 
 app = Flask(__name__)
@@ -12,8 +12,8 @@ dataPath  = '/home/ubuntu/watermelon/data/'
 
 
 if sys.argv[1] == 'dev':
-    modelPath = 'C:/Users/student/Downloads/melon/'
-    dataPath  = 'C:/Users/student/Downloads/melon/'
+    modelPath = 'C:/melon/'
+    dataPath  = 'C:/melon/'
 
 model = Song2Vec(path=modelPath)
 
