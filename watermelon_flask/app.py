@@ -134,8 +134,8 @@ def getSongId() :
                             {
                             'title' : saaList[2][1]+saaList[2][0],
                             'description' : saaList[2][2]
-                            },3
-                            {4
+                            },
+                            {
                             'title' : saaList[3][1]+saaList[3][0],
                             'description' : saaList[3][2]
                             },
