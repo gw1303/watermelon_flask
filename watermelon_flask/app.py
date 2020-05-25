@@ -173,7 +173,10 @@ songDf = pd.read_json('/home/ubuntu/watermelon/data/song_meta.json')
 @app.route("/")
 def hello():
     
+    print('print')
+
     return 'hello'
+
 
 
 
