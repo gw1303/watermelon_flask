@@ -188,6 +188,27 @@ def hello():
     return 'hello'
 
 
+@app.route("/block", methods=['POST'])
+def block():
+    req = request.get_json()
+    return_str = req['userRequest']['block']['id']
+    return_str = str(return_str).strip()
+
+    
+    res = {
+        'version': "2.0",
+        'template': {
+            'outputs': [{
+                'simpleText': {
+                    'text': return_str
+                }
+            }]
+        }
+    }
+
+    return jsonify(res)
+
+
 
 
 @app.route("/message", methods=['POST'])
@@ -279,7 +300,7 @@ def message():
                 quickReplies. append({
                         'label': str(i+1),
                         'action': 'block',
-                        'messageText': str(i+1),
+                        'messageText': str(songId),
                         'blockId' : 'add_music',
                         'extra' : str(songId),
                         })
