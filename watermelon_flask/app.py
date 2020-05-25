@@ -234,7 +234,7 @@ def message():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': artist
+                        'text': artist + song
                     }
                 }]
             }
