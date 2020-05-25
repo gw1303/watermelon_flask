@@ -228,13 +228,21 @@ def message():
         global songDf
 
         artist, song = return_str.split('-')
+        # 입력받은 가수와 제목으로 df 구성
+        findArtistDf = songDf[songDf.artist_name_basket.str.contains(artist.strip())].sort_values(by='song_name')
+        
+        if len(findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())) > 0 :
+            findSongDf = findArtistDf[findArtistDf.song_name.str.replace(' ', '').str.contains(song.strip())]
+        else :
+            findSongDf = findArtistDf
+
 
         res = {
             'version': "2.0",
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': artist + song
+                        'text': findSongDf['song_name'][0]
                     }
                 }]
             }
