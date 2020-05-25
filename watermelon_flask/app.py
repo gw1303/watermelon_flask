@@ -11,7 +11,7 @@ modelPath = '/home/ubuntu/watermelon/song2vec/'
 dataPath  = '/home/ubuntu/watermelon/data/'
 
 
-if sys.argv[1] == 'dev':
+if len(sys.argv)>1 and sys.argv[1] == 'dev':
     modelPath = 'C:/melon/'
     dataPath  = 'C:/melon/'
 
