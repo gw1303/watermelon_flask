@@ -301,7 +301,7 @@ def message():
                         'label': str(i+1),
                         'action': 'block',
                         'messageText': str(songId),
-                        'blockId' : 'add_music',
+                        'blockId' : '5ecb168c031ba400011698b3',
                         'extra' : str(songId),
                         })
 
@@ -336,6 +336,27 @@ def message():
         }
 
         return jsonify(res)
+
+@app.route("/addMusic", methods=['POST'])
+def addMusic()
+    req = request.get_json()
+    return_str = req['action']['clientExtra']
+    return_str = str(return_str)
+
+    
+    res = {
+        'version': "2.0",
+        'template': {
+            'outputs': [{
+                'simpleText': {
+                    'text': return_str
+                }
+            }]
+        }
+    }
+
+    return jsonify(res)
+
 
 
 # 메인 함수
