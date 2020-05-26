@@ -304,7 +304,7 @@ def message():
             ["선택삭제", "모두삭제", "돌아가기"],
             ["block", 'block', 'message'],
             ["선택삭제", "모두삭제", "시작"],
-            blockId = [None, None, None],   # blockID 추가 필요            
+            blockId = ['5eccf7cfd30dd70001af5fb6', '5eccf7dc6fe05800015edd5e', None],   # blockID 추가 필요            
         )
         
         return jsonify(res)
@@ -402,7 +402,7 @@ def addMusic():
     return jsonify(res)
 
 @app.route("/deleteAllMusic", methods=['POST'])
-def deleteAllMusic():
+def deleteAllMusic():  # 5eccf7dc6fe05800015edd5e
     req = request.get_json()
     utterance = req['userRequest']['utterance']
     utterance = str(utterance).strip()
@@ -422,7 +422,7 @@ def deleteAllMusic():
 
 @app.route("/deleteSelectedMusic", methods=['POST'])
 def deleteSelectedMusic():
-    thisBlockId = ''
+    thisBlockId = '5eccf7cfd30dd70001af5fb6'
     req = request.get_json()
     userId = req['userRequest']['user']['id']
     userId = str(userId).strip()
