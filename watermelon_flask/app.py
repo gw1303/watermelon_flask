@@ -390,6 +390,28 @@ def addMusic():
 
     return jsonify(res)
 
+@app.route("/deleteMusic", methods=['POST'])
+def deleteMusic():
+    req = request.get_json()
+    utterance = req['userRequest']['utterance']
+    utterance = str(utterance).strip()
+    userId = req['userRequest']['user']['id']
+    userId = str(userId).strip()
+    user = loadUser(userId)
+    
+    if utterance == '선택삭제':        
+        pass
+    elif utterance == '모두삭제':
+        pass
+
+
+    return 
+
+@app.route("/deleteSelectedMusic", methods=['POST'])
+def deleteSelectedMusic():
+    
+    return 
+
 
 # 메인 함수
 if __name__ == '__main__':
