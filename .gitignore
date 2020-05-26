@@ -5,3 +5,5 @@ song2vec/
 site-packages/
 
 users/
+
+__pycache__/
