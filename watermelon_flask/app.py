@@ -55,13 +55,14 @@ def makeQuickReply(outputText, labels, action, messages=None, blockId=None, extr
 
     for i in range(len(labels)):
         actionType = action[i] if type(action) is list else action
+        
         item = {
             'label': labels[i],
             'action': actionType,
             'messageText': messages[i] if messages else labels[i]
         }
         if actionType == 'block':
-            item['blockId'] = blockId
+            item['blockId'] = blockId[i]
         if extra:
             item['extra'] = extra[i]
         res['template']['quickReplies'].append(item)
@@ -293,7 +294,7 @@ def message():
             ["선택삭제", "모두삭제", "돌아가기"],
             ["block", 'block', 'message'],
             ["선택삭제", "모두삭제", "시작"],
-            blockId = None,   # blockID 추가 필요            
+            blockId = [None, None, None],   # blockID 추가 필요            
         )
         
         return jsonify(res)
@@ -390,37 +391,62 @@ def addMusic():
 
     return jsonify(res)
 
-@app.route("/deleteMusic", methods=['POST'])
-def deleteMusic():
+@app.route("/deleteAllMusic", methods=['POST'])
+def deleteAllMusic():
     req = request.get_json()
     utterance = req['userRequest']['utterance']
     utterance = str(utterance).strip()
     userId = req['userRequest']['user']['id']
     userId = str(userId).strip()
-    user = loadUser(userId)
-    
-    
-    if utterance == '선택삭제':
-        musicList = ''
-        
-        pass
+    user = loadUser(userId) 
 
-    elif utterance == '모두삭제':
-        user['myPlaylist'] = []        
-        res = makeQuickReply(
-            '삭제되었습니다.',
-            ['돌아가기'],
-            'message',
-            ['시작']
-        )
-
+    user['myPlaylist'] = []        
+    res = makeQuickReply(
+        '삭제되었습니다.',
+        ['돌아가기'],
+        'message',
+        ['시작']
+    )
     saveUser(userId, user)
     return res
 
 @app.route("/deleteSelectedMusic", methods=['POST'])
 def deleteSelectedMusic():
+    thisBlockId = ''
+    req = request.get_json()
+    userId = req['userRequest']['user']['id']
+    userId = str(userId).strip()
+    user = loadUser(userId)
 
-    return 
+    choice = req['action']['clientExtra']
+    if choice:
+        user['myPlaylist'].remove(choice)    
+
+    playlist = []
+    songids = []
+    for i, sid in enumerate(user['myPlaylist']):
+        playlist.append(f'{i+1}.{findSongById(sid)}')
+        songids.append(sid)
+    
+    if playlist:
+        res = makeQuickReply(
+            '\n'.join(playlist),
+            [str(j+1) for j in range(len(playlist))],
+            action = 'block',
+            messages=[f'{j+1}번' for j in range(len(playlist))],
+            blockId=[thisBlockId for j in range(len(playlist))],
+            extra=songids
+        )
+        
+    else:
+        res = makeQuickReply(
+        '남은 음악이 없어요.',
+        ['돌아가기'],
+        'message',
+        ['시작']
+    )
+
+    return res
 
 
 # 메인 함수
