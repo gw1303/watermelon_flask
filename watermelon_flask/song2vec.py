@@ -64,6 +64,14 @@ class Song2Vec():
                 totalsim += cos[i]
             genreVec /= totalsim
 
-        topN = self.model.similar_by_vector(songVec+tagVec+genreVec)
+        topN = self.model.similar_by_vector(songVec+tagVec+genreVec, topn=30)
+        
+        result = []
+        for mid, prob in topN:
+            if mid in songs:
+                continue
+            result.append((mid, prob))
+            if len(result)>=10:
+                break
 
-        return topN   
+        return result   
