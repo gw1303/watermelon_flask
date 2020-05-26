@@ -267,14 +267,14 @@ def message():
 
         pred = model.getRecommendation(songs=user['myPlaylist'])
 
-        txt = ''
+        txt = '당신에게 추천드리는 음악입니다.'
 
         for songId, prop in  pred :
     
             song = songDf.iloc[int(songId)]['song_name']
             artist = songDf.iloc[int(songId)]['artist_name_basket']
             
-            txt += f'당신에게 추천드리는 음악입니다.\n{song} - {artist} / {round(prop*100, 1)}%'
+            txt += f'\n\n{song} - {artist} / {round(prop*100, 1)}%'
 
         res = {
             'version': "2.0",
