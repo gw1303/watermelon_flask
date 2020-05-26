@@ -399,17 +399,22 @@ def deleteMusic():
     userId = str(userId).strip()
     user = loadUser(userId)
     
+    
     if utterance == '선택삭제':        
         pass
     elif utterance == '모두삭제':
-        pass
-
-
-    return 
+        user['myPlaylist'] = []
+        res = makeQuickReply(
+            '삭제되었습니다.',
+            ['돌아가기'],
+            'message',
+            ['시작']
+        )
+    return res
 
 @app.route("/deleteSelectedMusic", methods=['POST'])
 def deleteSelectedMusic():
-    
+
     return 
 
 
