@@ -171,7 +171,7 @@ def message():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': '추가하실 노래를 \n\n   가수 - 제목\n\n형식으로 입력해주세요'
+                        'text': '추가하실 노래를 \n\n     가수 - 제목\n\n형식으로 입력해주세요\n\n가수와 제목의 일부만 입력해도 검색이 가능합니다.'
                     }
                 }]
             }
@@ -239,7 +239,7 @@ def message():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': '원하시는 음악을 찾을 수 없습니다.'
+                        'text': '원하시는 음악을 찾을 수 없습니다.\n\n다시 입력해주세요.'
                     }
                 }],
                 'quickReplies': [{
@@ -421,7 +421,7 @@ def deleteAllMusic():  # 5eccf7dc6fe05800015edd5e
         ['시작']
     )
     saveUser(userId, user)
-    return res
+    return jsonify(res)
 
 @app.route("/deleteSelectedMusic", methods=['POST'])
 def deleteSelectedMusic():
@@ -459,7 +459,7 @@ def deleteSelectedMusic():
         ['시작']
     )
 
-    return res
+    return jsonify(res)
 
 
 # 메인 함수
