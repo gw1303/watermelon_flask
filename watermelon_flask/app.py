@@ -288,13 +288,15 @@ def message():
 
     elif return_str == '플레이리스트삭제' :
         req = request.get_json()
-        makeQuickReply(
+        res = makeQuickReply(
             "어떻게 할까요?",
             ["선택삭제", "모두삭제", "돌아가기"],
-            ["block", 'message', 'message'],
+            ["block", 'block', 'message'],
+            ["선택삭제", "모두삭제", "시작"],
             blockId = None,   # blockID 추가 필요            
         )
         
+        return jsonify(res)
         # req = request.get_json()
         # userId = req['userRequest']['user']['id']
         # userId = str(userId).strip()
