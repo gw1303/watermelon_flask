@@ -54,12 +54,13 @@ def makeQuickReply(outputText, labels, action, messages=None, blockId=None, extr
     }
 
     for i in range(len(labels)):
+        actionType = action[i] if type(action) is list else action
         item = {
             'label': labels[i],
-            'action': action,
+            'action': actionType,
             'messageText': messages[i] if messages else labels[i]
         }
-        if action == 'block':
+        if actionType == 'block':
             item['blockId'] = blockId
         if extra:
             item['extra'] = extra[i]
@@ -286,42 +287,49 @@ def message():
         return jsonify(res)
 
     elif return_str == '플레이리스트삭제' :
-        
         req = request.get_json()
-        userId = req['userRequest']['user']['id']
-        userId = str(userId).strip()
-        user = loadUser(userId)
+        makeQuickReply(
+            "어떻게 할까요?",
+            ["선택삭제", "모두삭제", "돌아가기"],
+            "block",
+            blockId=[]
+        )
         
-        myPlaylist = []
+        # req = request.get_json()
+        # userId = req['userRequest']['user']['id']
+        # userId = str(userId).strip()
+        # user = loadUser(userId)
+        
+        # myPlaylist = []
 
-        user['myPlaylist'] = myPlaylist 
+        # user['myPlaylist'] = myPlaylist 
 
-        saveUser(userId, user)
+        # saveUser(userId, user)
 
-        res = {
-            'version': "2.0",
-            'template': {
-                'outputs': [{
-                    'simpleText': {
-                        'text': f'플레이리스트가 삭제되었습니다.\n\nMy playlist : {myPlaylist}'
-                    }
-                }],
-                'quickReplies': [{
-                    'label': '음악추가',
-                    'action': 'message',
-                    'messageText': '음악추가',
+        # res = {
+        #     'version': "2.0",
+        #     'template': {
+        #         'outputs': [{
+        #             'simpleText': {
+        #                 'text': f'플레이리스트가 삭제되었습니다.\n\nMy playlist : {myPlaylist}'
+        #             }
+        #         }],
+        #         'quickReplies': [{
+        #             'label': '음악추가',
+        #             'action': 'message',
+        #             'messageText': '음악추가',
 
-                },
-                {
-                    'label': '음악추천',
-                    'action': 'message',
-                    'messageText': '음악추천',
+        #         },
+        #         {
+        #             'label': '음악추천',
+        #             'action': 'message',
+        #             'messageText': '음악추천',
 
-                }]
-            }
-        }
+        #         }]
+        #     }
+        # }
 
-        return jsonify(res)
+        # return jsonify(res)
 
     else:
         res = {
