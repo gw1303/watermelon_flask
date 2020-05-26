@@ -117,6 +117,7 @@ def block():
     return jsonify(res)
 
 
+# 메인 함수
 @app.route("/message", methods=['POST'])
 def message():
     req = request.get_json()
@@ -127,12 +128,21 @@ def message():
     global songDf
 
     if return_str == '시작':
+        req = request.get_json()
+
+        userId = req['userRequest']['user']['id']
+        userId = str(userId).strip()
+        user = loadUser(userId)
+        
+        myPlaylist = user['myPlaylist']
+
+
         res = {
             'version': "2.0",
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': '무엇을 하시겠습니까 ?'
+                        'text': '무엇을 하시겠습니까 ?\n\nMy playlist : {myPlaylist}'
                     }
                 }],
                 'quickReplies': [{
@@ -158,7 +168,7 @@ def message():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': '추가하실 노래를 \n가수 - 제목\n형식으로 입력해주세요'
+                        'text': '추가하실 노래를 \n\n   가수 - 제목\n\n형식으로 입력해주세요'
                     }
                 }]
             }
@@ -183,7 +193,7 @@ def message():
         idx = findSongDf['song_name'].str.len().sort_values().index
         findSongDf = findSongDf.reindex(idx)
 
-        txt = '몇번째 음악을 추가하시겠습니까?\n\n'
+        txt = '몇번째 음악을 추가하시겠습니까?'
         quickReplies = []
         if len(findSongDf) > 1 :
             for i in range(len(findSongDf)):
@@ -193,7 +203,7 @@ def message():
                 album = findSongDf.iloc[i].album_name
                 songId = findSongDf.iloc[i].name
 
-                txt += '{}번 {} - {} / {}\n\n'.format((i + 1), artist, song, album)  # song_name 출력
+                txt += '\n\n{}번 {} - {} / {}'.format((i + 1), artist, song, album)  # song_name 출력
 
                 quickReplies.append({
                     'label': str(i + 1),
@@ -261,7 +271,7 @@ def message():
             song = songDf.iloc[int(songId)]['song_name']
             artist = songDf.iloc[int(songId)]['artist_name_basket']
             
-            txt += f'{song} - {artist} / {round(prop*100, 1)}%\n\n'
+            txt += f'당신에게 추천드리는 음악입니다.\n{song} - {artist} / {round(prop*100, 1)}%'
 
         res = {
             'version': "2.0",
