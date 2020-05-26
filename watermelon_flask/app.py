@@ -70,8 +70,8 @@ def makeQuickReply(outputText, labels, action, messages=None, blockId=None, extr
 
 
 def findSongById(sid, df=songDf):
-    song = df.iloc[sid].song_name
-    artist = df.iloc[sid].artist_name_basket
+    song = df.iloc[int(sid)].song_name
+    artist = df.iloc[int(sid)].artist_name_basket
     return f'{song}-{artist}'
 
 
@@ -400,16 +400,21 @@ def deleteMusic():
     user = loadUser(userId)
     
     
-    if utterance == '선택삭제':        
+    if utterance == '선택삭제':
+        musicList = ''
+        
         pass
+
     elif utterance == '모두삭제':
-        user['myPlaylist'] = []
+        user['myPlaylist'] = []        
         res = makeQuickReply(
             '삭제되었습니다.',
             ['돌아가기'],
             'message',
             ['시작']
         )
+
+    saveUser(userId, user)
     return res
 
 @app.route("/deleteSelectedMusic", methods=['POST'])
