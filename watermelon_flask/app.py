@@ -291,8 +291,8 @@ def message():
         makeQuickReply(
             "어떻게 할까요?",
             ["선택삭제", "모두삭제", "돌아가기"],
-            "block",
-            blockId=[]
+            ["block", 'message', 'message'],
+            blockId = None,   # blockID 추가 필요            
         )
         
         # req = request.get_json()
