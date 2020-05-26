@@ -150,13 +150,16 @@ def message():
                     'action': 'message',
                     'messageText': '음악추가',
 
-                },
-                    {
-                        'label': '음악추천',
-                        'action': 'message',
-                        'messageText': '음악추천',
+                },{
+                    'label': '음악추천',
+                    'action': 'message',
+                    'messageText': '음악추천',
 
-                    }]
+                    },{
+                    'label': '플레이리스트삭제',
+                    'action': 'message',
+                    'messageText': '플레이리스트삭제',
+                }]
             }
         }
 
