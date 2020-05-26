@@ -142,7 +142,7 @@ def message():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': '무엇을 하시겠습니까 ?\n\nMy playlist : {myPlaylist}'
+                        'text': f'무엇을 하시겠습니까 ?\n\nMy playlist : {myPlaylist}'
                     }
                 }],
                 'quickReplies': [{
