@@ -208,7 +208,7 @@ def message():
                 album = findSongDf.iloc[i].album_name
                 songId = findSongDf.iloc[i].name
 
-                txt += '\n\n{}번 {} - {} / {}'.format((i + 1), artist, song, album)  # song_name 출력
+                txt += '\n\n{}번 {} - {} / {}'.format((i + 1), song, artist,  album)  # song_name 출력
 
                 quickReplies.append({
                     'label': str(i + 1),
@@ -408,12 +408,12 @@ def deleteSelectedMusic():
     songids = []
 
     for i, sid in enumerate(user['myPlaylist']):
-        playlist.append(f'{i+1}.{findSongById(sid)}')
+        playlist.append(f'{i+1}번 {findSongById(sid)}')
         songids.append({'songId':sid})
     
     if playlist:
         res = makeQuickReply(
-            '\n'.join(playlist),
+            '몇번째 음악을 삭제하시겠습니까?\n\n'+ '\n\n'.join(playlist),
             [str(j+1) for j in range(len(playlist))] + ["돌아가기"],
             action = ['block' for _ in range(len(playlist))] + ["message"],
             messages=[f'{j+1}번' for j in range(len(playlist))] + ["시작"],
