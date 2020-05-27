@@ -65,8 +65,8 @@ def makeQuickReply(outputText, labels, action, messages=None, blockId=None, extr
         }
         if actionType == 'block':
             item['blockId'] = blockId[i]
-        if extra[i]:
-            item['extra'] = extra[i]
+        if extra:
+            if extra[i] : item['extra'] = extra[i]
         res['template']['quickReplies'].append(item)
 
     return res
