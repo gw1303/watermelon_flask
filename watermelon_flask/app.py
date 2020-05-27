@@ -402,6 +402,7 @@ def deleteSelectedMusic():
 
     if choice:
         user['myPlaylist'].remove(choice['songId'])    
+        saveUser(userId, user)
 
     playlist = []
     songids = []
@@ -413,9 +414,9 @@ def deleteSelectedMusic():
     if playlist:
         res = makeQuickReply(
             '\n'.join(playlist),
-            [str(j+1) for j in range(len(playlist))],
-            action = 'block',
-            messages=[f'{j+1}번' for j in range(len(playlist))],
+            [str(j+1) for j in range(len(playlist))] + ["돌아가기"],
+            action = ['block' for _ in range(len(playlist))] + ["message"],
+            messages=[f'{j+1}번' for j in range(len(playlist))] + ["시작"],
             blockId=[thisBlockId for j in range(len(playlist))],
             extra=songids
         )
