@@ -345,8 +345,7 @@ def addMusic():
     userId = str(userId).strip()
 
     user = loadUser(userId)
-    user['myPlaylist'].append(songId)
-
+    
     myPlaylist = user['myPlaylist']
     
     if songId in myPlaylist :
@@ -373,7 +372,7 @@ def addMusic():
         return jsonify(res)
 
     else : 
-
+        user['myPlaylist'].append(songId)
         saveUser(userId, user)
 
         res = {
