@@ -48,7 +48,7 @@ class PreCalculated():
         
         rankResult = [(mid, combSUM[mid]*nonZero[mid]) for mid in ids]
 
-        return sorted(rankResult, key=lambda x: x[1])
+        return sorted(rankResult, key=lambda x: x[1], reverse=True)
         
 
     def minmaxScale(self, arr):
