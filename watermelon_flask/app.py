@@ -2,7 +2,7 @@ from flask import Flask, request, json, jsonify
 from gensim.models import Word2Vec
 import pandas as pd
 from song2vec import Song2Vec
-from ALS import PreCalculated
+# from ALS import PreCalculated
 import sys
 import pickle
 from konlpy.tag import Okt 
@@ -23,7 +23,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'dev':
     alsPath = 'C:/melon/'
 
 s2v = Song2Vec(path=s2vPath)
-als = PreCalculated(path=alsPath)
+# als = PreCalculated(path=alsPath)
 tw = Okt()
 tw.pos('시작합니다')
 
@@ -89,14 +89,14 @@ def findSongById(sid, df=songDf):
     artist = df.iloc[int(sid)].artist_name_basket
     return f'{song} - {artist}'
 
-def minmaxScaleTuplelist(arr):
-    ids = []
-    scores = []
-    for sid, score in arr:
-        ids.append(sid)
-        scores.append(score)
-    scaledScore = als.minmaxScale(scores)
-    return list(zip(ids, scaledScore))
+# def minmaxScaleTuplelist(arr):
+#     ids = []
+#     scores = []
+#     for sid, score in arr:
+#         ids.append(sid)
+#         scores.append(score)
+#     scaledScore = als.minmaxScale(scores)
+#     return list(zip(ids, scaledScore))
 
 
 def findGenreTag(message) :
@@ -386,15 +386,15 @@ def message():
         if user['myPlaylist'] :
 
             s2vResult = s2v.getRecommendation(songs=user['myPlaylist'])
-            alsResult = als.getRecommendation(songs=user['myPlaylist'])
-            s2vResult = minmaxScaleTuplelist(s2vResult)
-            alsResult = minmaxScaleTuplelist(alsResult)
+            # alsResult = als.getRecommendation(songs=user['myPlaylist'])
+            # s2vResult = minmaxScaleTuplelist(s2vResult)
+            # alsResult = minmaxScaleTuplelist(alsResult)
 
-            totalRank = als.combMNZ([s2vResult, alsResult])
+            # totalRank = als.combMNZ([s2vResult, alsResult])
             
             txt = '당신에게 추천드리는 음악입니다.'
 
-            for songId, prop in totalRank[:10] :
+            for songId, prop in s2vResult[:10] :
         
                 song = songDf.iloc[int(songId)]['song_name']
                 artist = songDf.iloc[int(songId)]['artist_name_basket']
