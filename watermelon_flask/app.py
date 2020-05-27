@@ -325,7 +325,7 @@ def message():
         if found :
             for i in found['genre'].values() :
                 genre += i
-            for i in found['tags'].values() :
+            for i in found['tag'].values() :
                 tags += i
 
         # pred = model.getRecommendation(songs=user['myPlaylist'], tags=tags, genres=genre)
