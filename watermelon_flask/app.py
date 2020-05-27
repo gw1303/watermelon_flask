@@ -198,7 +198,7 @@ def message():
 
         txt = '몇번째 음악을 추가하시겠습니까?'
         quickReplies = []
-        if len(findSongDf) > 1 :
+        if len(findSongDf) >= 1 :
             for i in range(len(findSongDf)):
 
                 song = findSongDf.iloc[i].song_name
@@ -425,6 +425,21 @@ def deleteAllMusic():  # 5eccf7dc6fe05800015edd5e
 
 @app.route("/deleteSelectedMusic", methods=['POST'])
 def deleteSelectedMusic():
+    req = request.get_json()
+    userId = req['userRequest']['user']['id']
+    userId = str(userId).strip()
+    user = loadUser(userId)
+
+
+
+
+
+
+
+
+
+
+
     thisBlockId = '5eccf7cfd30dd70001af5fb6'
     req = request.get_json()
     userId = req['userRequest']['user']['id']
