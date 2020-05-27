@@ -4,14 +4,16 @@ import pandas as pd
 
 class PreCalculated():
     def __init__(self, path):
-        self.prePred = None
+        self.preRec = None
         self.songIdx = {}
         self.songSets = {}
+        self.playList = None
         
         if path:
-            self.prePred = self.loadData(path + "ALS_pre_recommendations.bin")
+            self.preRec = self.loadData(path + "ALS_pre_recommendations.bin")
             self.songIdx = self.loadData(path + "songIdx.bin")
             self.songSets = self.loadData(path + "songSets.bin")        
+            self.playList = pd.read_pickle(path + 'playLists.bin')
 
     def loadData(self, path):
         with open(path, 'rb') as f:
@@ -34,7 +36,43 @@ class PreCalculated():
     def combMNZ(self):
         pass
 
-    def getRecommendataion(self, songs=[]):
+    def minmaxScale(self, arr):
+        ret = arr[:]
+        mi = 9999
+        mx = 0
+        for i in range(len(ret)):
+            mi = ret[i] if ret[i] < mi else mi
+            mx = ret[i] if ret[i] > mx else mx
+        for i in range(len(ret)):
+            ret[i] = (ret[i] - mi) / mx
+        return ret
+
+    def getRecommendataion(self, songs=[], nSimilar=3):
+        cos = self.getCosSimilar(songs, self.songIdx, self.songSets)
+        rec = []
+        for i in cos.argsort()[-nSimilar:]:                
+            # simliarity = cos[i]
+            # ALS user-i-th의 추천 = self.preRec[i]]
+            ids = []
+            scores = []
+            for mid, score in self.preRec[i]:
+                ids.append(mid)
+                scores.append(score)
+
+            scaledScore = np.array(self.minmaxScale(scores))
+            scaledScore *= cos[i]
+
+            rec.append([item for item in zip(ids, scaledScore)])
+            
+
+
+
+            
+
+            
+            
+            
+
         pass
 
     
