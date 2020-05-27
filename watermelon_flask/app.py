@@ -4,6 +4,9 @@ import pandas as pd
 from song2vec import Song2Vec
 import sys
 import pickle
+from konlpy.tag import Okt ; tw = Okt()
+import re
+
 
 app = Flask(__name__)
 
@@ -19,6 +22,9 @@ if len(sys.argv) > 1 and sys.argv[1] == 'dev':
 model = Song2Vec(path=modelPath)
 
 songDf = pd.read_json(dataPath + 'song_meta.json')
+genreDf = pd.DataFrame(pd.read_json(dataPath + 'genre_gn_all.json', encoding='utf-8', typ='series'), columns=['genre'])
+with open(f'{dataPath}tagUnique.bin', 'rb') as f:
+    tagUnique = pickle.load(f)  #
 
 
 def loadUser(userId):
@@ -78,17 +84,44 @@ def findSongById(sid, df=songDf):
     return f'{song} - {artist}'
 
 
-# genreDf = pd.DataFrame(pd.read_json(dataPath + 'genre_gn_all.json', encoding='utf-8', typ='series'), columns=['genre'])
-# genreDfIndex = list(genreDf.index)
-# genreNameList = genreDf['genre'].tolist()
-# playlistDf = pd.read_json(dataPath +'train.json')
+def findGenreTag(message) :
+    tagSeries = pd.Series(tagUnique)
 
-# # tag
-# tag = []
-# for i in playlistDf.tags :
-#     tag += i
+    message = message.replace(' ', '')
 
-# tagUnique = list(set(tag))
+    from konlpy.tag import Okt ; tw = Okt()
+    import re
+
+    targetTypes = ['Noun', 'Adjective','Verb']
+    target = []
+
+    for text, types in tw.pos(message) :
+        if types in targetTypes :
+            target.append(text)
+
+    # 불용어 제거
+    stopwords = ['음악', '노래', '때', '좋은','추천','기전','들을', '듣고싶어', '할', '해줘', '갈','듣기']
+    for stop in stopwords :
+        if stop in target :
+            target.remove(stop)
+
+    # tag, genre dict
+    tagDict = {}
+    genreDict = {}
+    for i in target :
+        if tagSeries[tagSeries.str.contains(i)].tolist() : 
+            tagList = tagSeries[tagSeries.str.contains(i)].tolist()
+            tagList.sort(key=len)
+            tagDict[i] = tagList[:4]
+        if genreDf[genreDf.genre.str.contains(i)].index.tolist() :
+            genreDict[i] = genreDf[genreDf.genre.str.contains(i)].index.tolist()
+
+    res = {'genre':genreDict, 'tag':tagDict}
+    
+    if res :
+        return res
+    else :
+        return None
 
 
 @app.route("/")
@@ -167,13 +200,13 @@ def message():
 
         return jsonify(res)
 
-    if return_str == '음악추가':
+    elif return_str == '음악추가':
         res = {
             'version': "2.0",
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': '=====================\n\n              가수 - 제목\n\n=====================\n\n        형식으로 입력해주세요\n\n   < 일부만 입력해도 검색 가능 >'
+                        'text': '=====================\n\n              가수 - 제목\n\n=====================\n\n        형식으로 입력해주세요\n\n  < 일부만 입력해도 검색 가능 >'
                     }            
                 }],
                 'quickReplies': [
@@ -274,13 +307,27 @@ def message():
         return jsonify(res)
 
 
-    elif return_str == '음악추천':
+    elif return_str.find('추천') != -1 :
+
+        global tw
+
         req = request.get_json()
         userId = req['userRequest']['user']['id']
         userId = str(userId).strip()
         user = loadUser(userId)
+        
+        found = findGenreTag(return_str)
+        
+        genre = []
+        tags = []
 
-        pred = model.getRecommendation(songs=user['myPlaylist'])
+        for i in found['genre'].values() :
+            genre += i
+        for i in found['genre'].values() :
+            tags += i
+
+
+        pred = model.getRecommendation(songs=user['myPlaylist'], tags=tags, genres=genre)
 
         txt = '당신에게 추천드리는 음악입니다.'
 
@@ -314,6 +361,48 @@ def message():
         }
 
         return jsonify(res)
+
+
+    # elif return_str == '음악추천':
+    #     req = request.get_json()
+    #     userId = req['userRequest']['user']['id']
+    #     userId = str(userId).strip()
+    #     user = loadUser(userId)
+
+    #     pred = model.getRecommendation(songs=user['myPlaylist'])
+
+    #     txt = '당신에게 추천드리는 음악입니다.'
+
+    #     for songId, prop in  pred :
+    
+    #         song = songDf.iloc[int(songId)]['song_name']
+    #         artist = songDf.iloc[int(songId)]['artist_name_basket']
+            
+    #         txt += f'\n\n{song} - {artist} / {round(prop*100, 1)}%'
+
+    #     res = {
+    #         'version': "2.0",
+    #         'template': {
+    #             'outputs': [{
+    #                 'simpleText': {
+    #                     'text': txt
+    #                 }
+    #             }],
+    #             'quickReplies': [{
+    #                 'label': '음악추가',
+    #                 'action': 'message',
+    #                 'messageText': '음악추가',
+    #             },
+    #             {
+    #                 'label': '돌아가기',
+    #                 'action': 'message',
+    #                 'messageText': '시작',
+
+    #             }]
+    #         }
+    #     }
+
+    #     return jsonify(res)
 
     elif return_str == '플레이리스트삭제' :
         req = request.get_json()
