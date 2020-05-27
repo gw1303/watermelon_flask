@@ -213,7 +213,7 @@ def message():
                 quickReplies.append({
                     'label': str(i + 1),
                     'action': 'block',
-                    'messageText': f'{i + 1}번 노래가 추가되었습니다.',
+                    'messageText': f'{i + 1}번 노래 추가해줘',
                     'blockId': '5ecb168c031ba400011698b3',
                     'extra': {'songId': str(songId)},
                 })
@@ -348,8 +348,6 @@ def addMusic():
     user['myPlaylist'].append(songId)
 
     myPlaylist = user['myPlaylist']
-
-    saveUser(userId, user)
     
     if songId in myPlaylist :
 
@@ -358,7 +356,7 @@ def addMusic():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': '해당 곡이 이미 추가되었습니다.'                   }
+                        'text': '해당 곡이 이미 존재합니다.'                   }
                 }],
                     'quickReplies': [{
                         'label': '음악추가',
@@ -373,8 +371,11 @@ def addMusic():
         }
 
         return jsonify(res)
-        
+
     else : 
+
+        saveUser(userId, user)
+
         res = {
             'version': "2.0",
             'template': {
