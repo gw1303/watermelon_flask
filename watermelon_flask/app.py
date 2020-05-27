@@ -190,7 +190,7 @@ def message():
                 },{
                     'label': '음악추천',
                     'action': 'message',
-                    'messageText': '음악추천',
+                    'messageText': '음악제안',
 
                     },{
                     'label': '플레이리스트삭제',
@@ -364,7 +364,7 @@ def message():
         return jsonify(res)
 
 
-    elif return_str == '음악추천':
+    elif return_str == '음악제안':
         req = request.get_json()
         userId = req['userRequest']['user']['id']
         userId = str(userId).strip()
@@ -514,7 +514,7 @@ def addMusic():
                     },{
                         'label': '음악추천',
                         'action': 'message',
-                        'messageText': '음악추천',
+                        'messageText': '음악제안',
                     },{
                         'label': '플레이리스트삭제',
                         'action': 'message',
