@@ -313,41 +313,6 @@ def message():
         )
         
         return jsonify(res)
-        # req = request.get_json()
-        # userId = req['userRequest']['user']['id']
-        # userId = str(userId).strip()
-        # user = loadUser(userId)
-        
-        # myPlaylist = []
-
-        # user['myPlaylist'] = myPlaylist 
-
-        # saveUser(userId, user)
-
-        # res = {
-        #     'version': "2.0",
-        #     'template': {
-        #         'outputs': [{
-        #             'simpleText': {
-        #                 'text': f'플레이리스트가 삭제되었습니다.\n\nMy playlist : {myPlaylist}'
-        #             }
-        #         }],
-        #         'quickReplies': [{
-        #             'label': '음악추가',
-        #             'action': 'message',
-        #             'messageText': '음악추가',
-
-        #         },
-        #         {
-        #             'label': '음악추천',
-        #             'action': 'message',
-        #             'messageText': '음악추천',
-
-        #         }]
-        #     }
-        # }
-
-        # return jsonify(res)
 
     else:
         res = {
@@ -427,21 +392,6 @@ def deleteAllMusic():  # 5eccf7dc6fe05800015edd5e
 
 @app.route("/deleteSelectedMusic", methods=['POST'])
 def deleteSelectedMusic():
-    req = request.get_json()
-    userId = req['userRequest']['user']['id']
-    userId = str(userId).strip()
-    user = loadUser(userId)
-
-
-
-
-
-
-
-
-
-
-
     thisBlockId = '5eccf7cfd30dd70001af5fb6'
     req = request.get_json()
     userId = req['userRequest']['user']['id']
@@ -449,14 +399,16 @@ def deleteSelectedMusic():
     user = loadUser(userId)
 
     choice = req['action']['clientExtra']
+
     if choice:
-        user['myPlaylist'].remove(choice)    
+        user['myPlaylist'].remove(choice['songId'])    
 
     playlist = []
     songids = []
+
     for i, sid in enumerate(user['myPlaylist']):
         playlist.append(f'{i+1}.{findSongById(sid)}')
-        songids.append(sid)
+        songids.append({'songId':sid})
     
     if playlist:
         res = makeQuickReply(
