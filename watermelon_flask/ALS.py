@@ -39,8 +39,8 @@ class PreCalculated():
         nonZero = defaultdict(int)
         combSUM = defaultdict(float)
         ids = []
-        for i in range(ranks):
-            for j in range(ranks[i]):
+        for i in range(len(ranks)):
+            for j in range(len(ranks[i])):
                 mid, score = ranks[i][j]
                 nonZero[mid] += 1 if score>0 else 0
                 combSUM[mid] += score
