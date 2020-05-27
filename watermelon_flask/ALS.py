@@ -1,6 +1,7 @@
 import pickle
 import numpy as np
 import pandas as pd 
+from collections import defaultdict
 
 class PreCalculated():
     def __init__(self, path):
@@ -33,8 +34,22 @@ class PreCalculated():
                 res.append(0)
         return np.array(res)
 
-    def combMNZ(self):
-        pass
+    def combMNZ(self, ranks):
+        # ranks = [[(musicId, prob), ...], ...]
+        nonZero = defaultdict(int)
+        combSUM = defaultdict(float)
+        ids = []
+        for i in range(ranks):
+            for j in range(ranks[i]):
+                mid, score = ranks[i][j]
+                nonZero[mid] += 1 if score>0 else 0
+                combSUM[mid] += score
+                ids.append(mid)
+        
+        rankResult = [(mid, combSUM[mid]*nonZero[mid]) for mid in ids]
+
+        return sorted(rankResult, key=lambda x: x[1])
+        
 
     def minmaxScale(self, arr):
         ret = arr[:]
