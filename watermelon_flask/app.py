@@ -75,7 +75,7 @@ def makeQuickReply(outputText, labels, action, messages=None, blockId=None, extr
 def findSongById(sid, df=songDf):
     song = df.iloc[int(sid)].song_name
     artist = df.iloc[int(sid)].artist_name_basket
-    return f'{song}-{artist}'
+    return f'{song} - {artist}'
 
 
 # genreDf = pd.DataFrame(pd.read_json(dataPath + 'genre_gn_all.json', encoding='utf-8', typ='series'), columns=['genre'])
@@ -173,8 +173,8 @@ def message():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': '추가하실 노래를 \n\n     가수 - 제목\n\n형식으로 입력해주세요\n\n가수와 제목의 일부만 입력해도 검색이 가능합니다.'
-                    }
+                        'text': '==============================\n\n     가수 - 제목\n\n==============================\n\n형식으로 입력해주세요\n\n<< 일부만 입력해도 검색 가능 >>'
+                    }            
                 }]
             }
         }
