@@ -2,24 +2,28 @@ from flask import Flask, request, json, jsonify
 from gensim.models import Word2Vec
 import pandas as pd
 from song2vec import Song2Vec
+from ALS import PreCalculated
 import sys
 import pickle
 from konlpy.tag import Okt 
 import re
-import gc
+
 
 app = Flask(__name__)
 
 app.config['JSON_AS_ASCII'] = False
 
-modelPath = '/home/ubuntu/watermelon/song2vec/'
+s2vPath = '/home/ubuntu/watermelon/song2vec/'
+alsPath = '/home/ubuntu/watermelon/als/'
 dataPath = '/home/ubuntu/watermelon/data/'
 
 if len(sys.argv) > 1 and sys.argv[1] == 'dev':
-    modelPath = 'C:/melon/'
+    s2vPath = 'C:/melon/'
     dataPath = 'C:/melon/'
+    alsPath = 'C:/melon/'
 
-model = Song2Vec(path=modelPath)
+s2v = Song2Vec(path=s2vPath)
+als = PreCalculated(path=alsPath)
 tw = Okt()
 tw.pos('시작합니다')
 
@@ -84,6 +88,15 @@ def findSongById(sid, df=songDf):
     song = df.iloc[int(sid)].song_name
     artist = df.iloc[int(sid)].artist_name_basket
     return f'{song} - {artist}'
+
+def minmaxScaleTuplelist(arr):
+    ids = []
+    scores = []
+    for sid, score in arr:
+        ids.append(sid)
+        scores.append(score)
+    scaledScore = als.minmaxScale(scores)
+    return list(zip(ids, scaledScore))
 
 
 def findGenreTag(message) :
@@ -318,6 +331,7 @@ def message():
         
         found = findGenreTag(return_str)
         
+
         genre = []
         tags = []
 
@@ -327,11 +341,11 @@ def message():
             for i in found['tag'].values() :
                 tags += i
 
-        pred = model.getRecommendation(songs=user['myPlaylist'], tags=tags, genres=genre)
+        pred = s2v.getRecommendation(songs=user['myPlaylist'], tags=tags, genres=genre)
 
         txt = '당신에게 추천드리는 음악입니다.'
 
-        for songId, prop in  pred :
+        for songId, prop in  pred[:10] :
     
             song = songDf.iloc[int(songId)]['song_name']
             artist = songDf.iloc[int(songId)]['artist_name_basket']
@@ -359,7 +373,7 @@ def message():
                 }]
             }
         }
-        gc.collect()
+
         return jsonify(res)
 
 
@@ -371,11 +385,16 @@ def message():
 
         if user['myPlaylist'] :
 
-            pred = model.getRecommendation(songs=user['myPlaylist'])
+            s2vResult = s2v.getRecommendation(songs=user['myPlaylist'])
+            alsResult = als.getRecommendation(songs=user['myPlaylist'])
+            s2vResult = minmaxScaleTuplelist(s2vResult)
+            alsResult = minmaxScaleTuplelist(alsResult)
 
+            totalRank = als.combMNZ([s2vResult, alsResult])
+            
             txt = '당신에게 추천드리는 음악입니다.'
 
-            for songId, prop in  pred :
+            for songId, prop in totalRank[:10] :
         
                 song = songDf.iloc[int(songId)]['song_name']
                 artist = songDf.iloc[int(songId)]['artist_name_basket']

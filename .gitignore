@@ -1,6 +1,7 @@
 
 data/
 song2vec/
+als/
 
 site-packages/
 
