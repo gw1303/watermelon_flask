@@ -8,13 +8,11 @@ class PreCalculated():
         self.preRec = None
         self.songIdx = {}
         self.songSets = {}
-        self.playList = None
         
         if path:
             self.preRec = self.loadData(path + "ALS_pre_recommendations.bin")
             self.songIdx = self.loadData(path + "songIdx.bin")
             self.songSets = self.loadData(path + "songSets.bin")        
-            self.playList = pd.read_pickle(path + 'playLists.bin')
 
     def loadData(self, path):
         with open(path, 'rb') as f:
