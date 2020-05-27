@@ -1,6 +1,9 @@
 
 data/
 song2vec/
+als/
+
+ALS_pre_recommendations.bin
 
 site-packages/
 

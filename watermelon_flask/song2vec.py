@@ -23,7 +23,7 @@ class Song2Vec():
     
     def loadData(self, path):
         with open(path, 'rb') as f:
-            data = pickle.load(f) # 단 한줄씩 읽어옴
+            data = pickle.load(f) 
             return data
 
     def itemToIdx(self, items, typIdx):
@@ -64,14 +64,14 @@ class Song2Vec():
                 totalsim += cos[i]
             genreVec /= totalsim
 
-        topN = self.model.similar_by_vector(songVec+tagVec+genreVec, topn=30)
+        topN = self.model.similar_by_vector(songVec+tagVec+genreVec, topn=len(songs) + 50)
         
         result = []
         for mid, prob in topN:
             if mid in songs:
                 continue
             result.append((mid, prob))
-            if len(result)>=10:
+            if len(result)>=50:
                 break
 
         return result   
