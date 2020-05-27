@@ -7,6 +7,8 @@ import pickle
 
 app = Flask(__name__)
 
+app.config['JSON_AS_ASCII'] = False
+
 modelPath = '/home/ubuntu/watermelon/song2vec/'
 dataPath = '/home/ubuntu/watermelon/data/'
 
