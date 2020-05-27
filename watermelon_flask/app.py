@@ -370,40 +370,67 @@ def message():
         userId = str(userId).strip()
         user = loadUser(userId)
 
-        pred = model.getRecommendation(songs=user['myPlaylist'])
+        if user['myPlaylist'] :
 
-        txt = '당신에게 추천드리는 음악입니다.'
+            pred = model.getRecommendation(songs=user['myPlaylist'])
 
-        for songId, prop in  pred :
-    
-            song = songDf.iloc[int(songId)]['song_name']
-            artist = songDf.iloc[int(songId)]['artist_name_basket']
-            
-            txt += f'\n\n{song} - {artist} / {round(prop*100, 1)}%'
+            txt = '당신에게 추천드리는 음악입니다.'
 
-        res = {
-            'version': "2.0",
-            'template': {
-                'outputs': [{
-                    'simpleText': {
-                        'text': txt
-                    }
-                }],
-                'quickReplies': [{
-                    'label': '음악추가',
-                    'action': 'message',
-                    'messageText': '음악추가',
-                },
-                {
-                    'label': '돌아가기',
-                    'action': 'message',
-                    'messageText': '시작',
+            for songId, prop in  pred :
+        
+                song = songDf.iloc[int(songId)]['song_name']
+                artist = songDf.iloc[int(songId)]['artist_name_basket']
+                
+                txt += f'\n\n{song} - {artist} / {round(prop*100, 1)}%'
 
-                }]
+            res = {
+                'version': "2.0",
+                'template': {
+                    'outputs': [{
+                        'simpleText': {
+                            'text': txt
+                        }
+                    }],
+                    'quickReplies': [{
+                        'label': '음악추가',
+                        'action': 'message',
+                        'messageText': '음악추가',
+                    },
+                    {
+                        'label': '돌아가기',
+                        'action': 'message',
+                        'messageText': '시작',
+
+                    }]
+                }
             }
-        }
 
-        return jsonify(res)
+            return jsonify(res)
+
+        else : 
+            res = {
+                'version': "2.0",
+                'template': {
+                    'outputs': [{
+                        'simpleText': {
+                            'text': '플레이리스트에 음악을 추가해주세요.'
+                        }
+                    }],
+                    'quickReplies': [{
+                        'label': '음악추가',
+                        'action': 'message',
+                        'messageText': '음악추가',
+                    },
+                    {
+                        'label': '돌아가기',
+                        'action': 'message',
+                        'messageText': '시작',
+
+                    }]
+                }
+            }
+
+            return jsonify(res)
 
     elif return_str == '플레이리스트삭제' :
         req = request.get_json()
