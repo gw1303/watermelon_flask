@@ -344,7 +344,7 @@ def message():
             'template': {
                 'outputs': [{
                     'simpleText': {
-                        'text': txt
+                        'text': str(genre) + str(tags)
                     }
                 }],
                 'quickReplies': [{
