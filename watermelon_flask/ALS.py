@@ -78,6 +78,8 @@ class PreCalculated():
             scaledScore *= cos[i]
 
             rec.append([item for item in zip(ids, scaledScore)])
+        
+        return self.combMNZ(rec)
             
 
 
