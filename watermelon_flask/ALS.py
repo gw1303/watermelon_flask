@@ -63,7 +63,7 @@ class PreCalculated():
         return ret
 
     def getRecommendataion(self, songs=[], nSimilar=3):
-        cos = self.getCosSimilar(songs, self.songIdx, self.songSets)
+        cos = self.getCosSimilar([int(song) for song in songs], self.songIdx, self.songSets)
         rec = []
         for i in cos.argsort()[-nSimilar:]:                
             # simliarity = cos[i]
