@@ -60,7 +60,7 @@ class PreCalculated():
             ret[i] = (ret[i] - mi) / mx
         return ret
 
-    def getRecommendataion(self, songs=[], nSimilar=3):
+    def getRecommendation(self, songs=[], nSimilar=3):
         cos = self.getCosSimilar([int(song) for song in songs], self.songIdx, self.songSets)
         rec = []
         for i in cos.argsort()[-nSimilar:]:                
@@ -75,6 +75,6 @@ class PreCalculated():
             scaledScore = np.array(self.minmaxScale(scores))
             scaledScore *= cos[i]
 
-            rec.append([item for item in zip(ids, scaledScore)])
+            rec.append(list(zip(ids, scaledScore)))
         
         return self.combMNZ(rec)     
