@@ -79,18 +79,4 @@ class PreCalculated():
 
             rec.append([item for item in zip(ids, scaledScore)])
         
-        return self.combMNZ(rec)
-            
-
-
-
-            
-
-            
-            
-            
-
-        pass
-
-    
-    
+        return self.combMNZ(rec)     
