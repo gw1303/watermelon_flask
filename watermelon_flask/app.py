@@ -7,6 +7,7 @@ import sys
 import pickle
 from konlpy.tag import Okt 
 import re
+import gc
 
 
 app = Flask(__name__)
@@ -375,6 +376,8 @@ def message():
                     }]
                 }
             }
+
+            gc.collect()
 
             return jsonify(res)
 
