@@ -351,31 +351,55 @@ def addMusic():
 
     saveUser(userId, user)
     
-    res = {
-        'version': "2.0",
-        'template': {
-            'outputs': [{
-                'simpleText': {
-                    'text': f'노래가 추가되었습니다.\n\nMy playlist : {myPlaylist}'# '무엇을 하시겠습니까 ?'
-                }
-            }],
-                'quickReplies': [{
-                    'label': '음악추가',
-                    'action': 'message',
-                    'messageText': '음악추가',
-                },{
-                    'label': '음악추천',
-                    'action': 'message',
-                    'messageText': '음악추천',
-                },{
-                    'label': '플레이리스트삭제',
-                    'action': 'message',
-                    'messageText': '플레이리스트삭제',
-                }]
-        }
-    }
+    if songId in myPlaylist :
 
-    return jsonify(res)
+        res = {
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': '해당 곡이 이미 추가되었습니다.'                   }
+                }],
+                    'quickReplies': [{
+                        'label': '음악추가',
+                        'action': 'message',
+                        'messageText': '음악추가',
+                    },{
+                        'label': '돌아가기',
+                        'action': 'message',
+                        'messageText': '시작',
+                    }]
+            }
+        }
+
+        return jsonify(res)
+        
+    else : 
+        res = {
+            'version': "2.0",
+            'template': {
+                'outputs': [{
+                    'simpleText': {
+                        'text': f'노래가 추가되었습니다.\n\nMy playlist : {myPlaylist}'# '무엇을 하시겠습니까 ?'
+                    }
+                }],
+                    'quickReplies': [{
+                        'label': '음악추가',
+                        'action': 'message',
+                        'messageText': '음악추가',
+                    },{
+                        'label': '음악추천',
+                        'action': 'message',
+                        'messageText': '음악추천',
+                    },{
+                        'label': '플레이리스트삭제',
+                        'action': 'message',
+                        'messageText': '플레이리스트삭제',
+                    }]
+            }
+        }
+
+        return jsonify(res)
 
 @app.route("/deleteAllMusic", methods=['POST'])
 def deleteAllMusic():  # 5eccf7dc6fe05800015edd5e
