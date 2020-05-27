@@ -23,7 +23,7 @@ class Song2Vec():
     
     def loadData(self, path):
         with open(path, 'rb') as f:
-            data = pickle.load(f) # 단 한줄씩 읽어옴
+            data = pickle.load(f) 
             return data
 
     def itemToIdx(self, items, typIdx):
