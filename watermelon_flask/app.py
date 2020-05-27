@@ -85,12 +85,12 @@ def findSongById(sid, df=songDf):
 
 
 def findGenreTag(message) :
-    tagSeries = pd.Series(tagUnique)
 
+    global tw
+
+    tagSeries = pd.Series(tagUnique)
     message = message.replace(' ', '')
 
-    from konlpy.tag import Okt ; tw = Okt()
-    import re
 
     targetTypes = ['Noun', 'Adjective','Verb']
     target = []
@@ -328,16 +328,16 @@ def message():
             for i in found['genre'].values() :
                 tags += i
 
-        pred = model.getRecommendation(songs=user['myPlaylist'], tags=tags, genres=genre)
+        # pred = model.getRecommendation(songs=user['myPlaylist'], tags=tags, genres=genre)
 
-        txt = '당신에게 추천드리는 음악입니다.'
+        # txt = '당신에게 추천드리는 음악입니다.'
 
-        for songId, prop in  pred :
+        # for songId, prop in  pred :
     
-            song = songDf.iloc[int(songId)]['song_name']
-            artist = songDf.iloc[int(songId)]['artist_name_basket']
+        #     song = songDf.iloc[int(songId)]['song_name']
+        #     artist = songDf.iloc[int(songId)]['artist_name_basket']
             
-            txt += f'\n\n{song} - {artist} / {round(prop*100, 1)}%'
+        #     txt += f'\n\n{song} - {artist} / {round(prop*100, 1)}%'
 
         res = {
             'version': "2.0",
