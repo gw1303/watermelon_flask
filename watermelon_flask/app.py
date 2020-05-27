@@ -221,6 +221,12 @@ def message():
                 if i == 9:
                     break
 
+            quickReplies.append({
+                    'label': '돌아가기',
+                    'action': 'message',
+                    'messageText': '시작',
+                })    
+
             res = {
                 'version': "2.0",
                 'template': {
