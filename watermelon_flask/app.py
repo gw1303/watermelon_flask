@@ -65,7 +65,7 @@ def makeQuickReply(outputText, labels, action, messages=None, blockId=None, extr
         }
         if actionType == 'block':
             item['blockId'] = blockId[i]
-        if extra:
+        if extra[i]:
             item['extra'] = extra[i]
         res['template']['quickReplies'].append(item)
 
@@ -418,7 +418,7 @@ def deleteSelectedMusic():
             action = ['block' for _ in range(len(playlist))] + ["message"],
             messages=[f'{j+1}번' for j in range(len(playlist))] + ["시작"],
             blockId=[thisBlockId for j in range(len(playlist))],
-            extra=songids
+            extra=songids + [None]
         )
         
     else:
