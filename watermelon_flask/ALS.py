@@ -38,13 +38,13 @@ class PreCalculated():
         # ranks = [[(musicId, prob), ...], ...]
         nonZero = defaultdict(int)
         combSUM = defaultdict(float)
-        ids = []
+        ids = set()
         for i in range(len(ranks)):
             for j in range(len(ranks[i])):
                 mid, score = ranks[i][j]
                 nonZero[mid] += 1 if score>0 else 0
                 combSUM[mid] += score
-                ids.append(mid)
+                ids.add(mid)
         
         rankResult = [(mid, combSUM[mid]*nonZero[mid]) for mid in ids]
 
