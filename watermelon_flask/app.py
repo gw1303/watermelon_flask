@@ -4,7 +4,7 @@ import pandas as pd
 from song2vec import Song2Vec
 import sys
 import pickle
-from konlpy.tag import Okt ; tw = Okt()
+from konlpy.tag import Okt 
 import re
 
 
@@ -20,6 +20,8 @@ if len(sys.argv) > 1 and sys.argv[1] == 'dev':
     dataPath = 'C:/melon/'
 
 model = Song2Vec(path=modelPath)
+tw = Okt()
+tw.pos('시작합니다')
 
 songDf = pd.read_json(dataPath + 'song_meta.json')
 genreDf = pd.DataFrame(pd.read_json(dataPath + 'genre_gn_all.json', encoding='utf-8', typ='series'), columns=['genre'])
@@ -308,8 +310,6 @@ def message():
 
 
     elif return_str.find('추천') != -1 :
-
-        global tw
 
         req = request.get_json()
         userId = req['userRequest']['user']['id']
