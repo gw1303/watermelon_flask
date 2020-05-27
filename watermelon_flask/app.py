@@ -112,13 +112,13 @@ def findGenreTag(message) :
         if tagSeries[tagSeries.str.contains(i)].tolist() : 
             tagList = tagSeries[tagSeries.str.contains(i)].tolist()
             tagList.sort(key=len)
-            tagDict[i] = tagList[:4]
+            tagDict[i] = tagList[:3]
         if genreDf[genreDf.genre.str.contains(i)].index.tolist() :
             genreDict[i] = genreDf[genreDf.genre.str.contains(i)].index.tolist()
 
     res = {'genre':genreDict, 'tag':tagDict}
     
-    if res :
+    if res['genre'] or res['tag'] :
         return res
     else :
         return None
@@ -318,14 +318,15 @@ def message():
         
         found = findGenreTag(return_str)
         
+
         genre = []
         tags = []
 
-        for i in found['genre'].values() :
-            genre += i
-        for i in found['genre'].values() :
-            tags += i
-
+        if found :
+            for i in found['genre'].values() :
+                genre += i
+            for i in found['genre'].values() :
+                tags += i
 
         pred = model.getRecommendation(songs=user['myPlaylist'], tags=tags, genres=genre)
 
