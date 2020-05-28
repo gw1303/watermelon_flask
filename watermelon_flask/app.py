@@ -2,7 +2,7 @@ from flask import Flask, request, json, jsonify
 from gensim.models import Word2Vec
 import pandas as pd
 from song2vec import Song2Vec
-# from ALS import PreCalculated
+from ALS import PreCalculated
 import sys
 import pickle
 from konlpy.tag import Okt 
@@ -24,7 +24,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'dev':
     alsPath = 'C:/melon/'
 
 s2v = Song2Vec(path=s2vPath)
-# als = PreCalculated(path=alsPath)
+als = PreCalculated(path=alsPath)
 tw = Okt()
 tw.pos('시작합니다')
 
