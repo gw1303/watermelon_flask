@@ -71,7 +71,7 @@ class PreCalculated():
             # simliarity = cos[i]
             # ALS user-i-th의 추천 = self.preRec[i]]
 
-            scaledScore = self.rankScore[:]
+            scaledScore = self.minmaxScale(self.preScore[i])
             scaledScore *= cos[i]
 
             rec.append(list(zip(self.preItem[i], scaledScore)))
