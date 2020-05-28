@@ -5,14 +5,16 @@ from collections import defaultdict
 
 class PreCalculated():
     def __init__(self, path):
-        self.preRec = None
+        self.preItem = None
+        self.preScore = None
         self.songIdx = {}
         self.songSets = {}
         
         if path:
-            self.preRec = self.loadData(path + "ALS_pre_recommendations.bin")
+            self.preItem = self.loadData(path + "ALS_pre_rec_item.bin")
+            self.preScore = self.loadData(path + "ALS_pre_rec_score.bin")
             self.songIdx = self.loadData(path + "songIdx.bin")
-            self.songSets = self.loadData(path + "songSets.bin")        
+            self.songSets = self.loadData(path + "songSets.bin")       
 
     def loadData(self, path):
         with open(path, 'rb') as f:
@@ -66,15 +68,10 @@ class PreCalculated():
         for i in cos.argsort()[-nSimilar:]:                
             # simliarity = cos[i]
             # ALS user-i-th의 추천 = self.preRec[i]]
-            ids = []
-            scores = []
-            for mid, score in self.preRec[i]:
-                ids.append(mid)
-                scores.append(score)
 
-            scaledScore = np.array(self.minmaxScale(scores))
+            scaledScore = self.minmaxScale(self.preScore[i])
             scaledScore *= cos[i]
 
-            rec.append(list(zip(ids, scaledScore)))
+            rec.append(list(zip(self.preItem[i], scaledScore)))
         
-        return self.combMNZ(rec)     
+        return self.combMNZ(rec)    
