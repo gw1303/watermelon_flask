@@ -7,6 +7,7 @@ import sys
 import pickle
 from konlpy.tag import Okt 
 import re
+import gc
 
 
 app = Flask(__name__)
@@ -341,41 +342,69 @@ def message():
             for i in found['tag'].values() :
                 tags += i
 
-        pred = s2v.getRecommendation(songs=user['myPlaylist'], tags=tags, genres=genre)
+        if tags or genre :
 
-        txt = '당신에게 추천드리는 음악입니다.'
+            pred = s2v.getRecommendation(songs=user['myPlaylist'], tags=tags, genres=genre)
 
-        for songId, prop in  pred[:10] :
-    
-            song = songDf.iloc[int(songId)]['song_name']
-            artist = songDf.iloc[int(songId)]['artist_name_basket']
-            
-            txt += f'\n\n{song} - {artist} / {round(prop*100, 1)}%'
+            txt = '당신에게 추천드리는 음악입니다.'
 
-        res = {
-            'version': "2.0",
-            'template': {
-                'outputs': [{
-                    'simpleText': {
-                        'text': txt
-                    }
-                }],
-                'quickReplies': [{
-                    'label': '음악추가',
-                    'action': 'message',
-                    'messageText': '음악추가',
-                },
-                {
-                    'label': '돌아가기',
-                    'action': 'message',
-                    'messageText': '시작',
+            for songId, prop in  pred[:10] :
+        
+                song = songDf.iloc[int(songId)]['song_name']
+                artist = songDf.iloc[int(songId)]['artist_name_basket']
+                
+                txt += f'\n\n{song} - {artist} / {round(prop*100, 1)}%'
 
-                }]
+            res = {
+                'version': "2.0",
+                'template': {
+                    'outputs': [{
+                        'simpleText': {
+                            'text': txt
+                        }
+                    }],
+                    'quickReplies': [{
+                        'label': '음악추가',
+                        'action': 'message',
+                        'messageText': '음악추가',
+                    },
+                    {
+                        'label': '돌아가기',
+                        'action': 'message',
+                        'messageText': '시작',
+
+                    }]
+                }
             }
-        }
 
-        return jsonify(res)
+            gc.collect()
 
+            return jsonify(res)
+
+        else : 
+            res = {
+                'version': "2.0",
+                'template': {
+                    'outputs': [{
+                        'simpleText': {
+                            'text': '원하시는 느낌의 음악을 찾을 수 없습니다.'
+                        }
+                    }],
+                    'quickReplies': [{
+                        'label': '음악추가',
+                        'action': 'message',
+                        'messageText': '음악추가',
+                    },
+                    {
+                        'label': '돌아가기',
+                        'action': 'message',
+                        'messageText': '시작',
+
+                    }]
+                }
+            }
+
+            return jsonify(res)
 
     elif return_str == '음악제안':
         req = request.get_json()
