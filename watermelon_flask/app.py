@@ -411,7 +411,8 @@ def message():
             s2vResultItem = [sid for sid, score in s2vResult]
             alsResultItem = [sid for sid, score in alsResult]
 
-            s2vResult = list(zip(s2vResultItem, als.rankI))
+            s2vResult = list(zip(s2vResultItem, als.rankScore))
+            alsResult = list(zip(alsResultItem, als.rankScore))
 
             totalRank = als.combMNZ([s2vResult, alsResult])
             

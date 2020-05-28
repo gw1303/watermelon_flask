@@ -14,7 +14,7 @@ class PreCalculated():
         
         if path:
             self.preItem = self.loadData(path + "ALS_pre_rec_item.bin")
-            #self.preScore = self.loadData(path + "ALS_pre_rec_score.bin")
+            self.preScore = self.loadData(path + "ALS_pre_rec_score.bin")
             self.songIdx = self.loadData(path + "songIdx.bin")
             self.songSets = self.loadData(path + "songSets.bin")       
 
@@ -52,6 +52,18 @@ class PreCalculated():
 
         return sorted(rankResult, key=lambda x: x[1], reverse=True)
         
+
+    def minmaxScale(self, arr):
+        ret = arr[:]
+        mi = 9999
+        mx = 0
+        for i in range(len(ret)):
+            mi = ret[i] if ret[i] < mi else mi
+            mx = ret[i] if ret[i] > mx else mx
+        for i in range(len(ret)):
+            ret[i] = (ret[i] - mi) / (mx - mi)
+        return ret
+
     def getRecommendation(self, songs=[], nSimilar=3):
         cos = self.getCosSimilar([int(song) for song in songs], self.songIdx, self.songSets)
         rec = []
