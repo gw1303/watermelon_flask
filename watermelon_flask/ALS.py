@@ -9,10 +9,12 @@ class PreCalculated():
         self.preScore = None
         self.songIdx = {}
         self.songSets = {}
+        self.rankScore = [0.02 *i for i in range(50,0,-1)]
+
         
         if path:
             self.preItem = self.loadData(path + "ALS_pre_rec_item.bin")
-            self.preScore = self.loadData(path + "ALS_pre_rec_score.bin")
+            #self.preScore = self.loadData(path + "ALS_pre_rec_score.bin")
             self.songIdx = self.loadData(path + "songIdx.bin")
             self.songSets = self.loadData(path + "songSets.bin")       
 
@@ -50,18 +52,6 @@ class PreCalculated():
 
         return sorted(rankResult, key=lambda x: x[1], reverse=True)
         
-
-    def minmaxScale(self, arr):
-        ret = arr[:]
-        mi = 9999
-        mx = 0
-        for i in range(len(ret)):
-            mi = ret[i] if ret[i] < mi else mi
-            mx = ret[i] if ret[i] > mx else mx
-        for i in range(len(ret)):
-            ret[i] = (ret[i] - mi) / mx
-        return ret
-
     def getRecommendation(self, songs=[], nSimilar=3):
         cos = self.getCosSimilar([int(song) for song in songs], self.songIdx, self.songSets)
         rec = []
@@ -69,7 +59,7 @@ class PreCalculated():
             # simliarity = cos[i]
             # ALS user-i-th의 추천 = self.preRec[i]]
 
-            scaledScore = self.minmaxScale(self.preScore[i])
+            scaledScore = self.rankScore[:]
             scaledScore *= cos[i]
 
             rec.append(list(zip(self.preItem[i], scaledScore)))
