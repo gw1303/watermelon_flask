@@ -59,7 +59,7 @@ class PreCalculated():
             mi = ret[i] if ret[i] < mi else mi
             mx = ret[i] if ret[i] > mx else mx
         for i in range(len(ret)):
-            ret[i] = (ret[i] - mi) / mx
+            ret[i] = (ret[i] - mi) / (mx - mi)
         return ret
 
     def getRecommendation(self, songs=[], nSimilar=3):
