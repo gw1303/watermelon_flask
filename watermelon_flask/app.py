@@ -344,7 +344,7 @@ def message():
                 song = songDf.iloc[int(songId)]['song_name']
                 artist = songDf.iloc[int(songId)]['artist_name_basket']
                 
-                txt += f'\n\n{song} - {artist}%'
+                txt += f'\n\n{song} - {artist}'
 
             res = {
                 'version': "2.0",
@@ -423,7 +423,7 @@ def message():
                 song = songDf.iloc[int(songId)]['song_name']
                 artist = songDf.iloc[int(songId)]['artist_name_basket']
                 
-                txt += f'\n\n{song} - {artist}%'
+                txt += f'\n\n{song} - {artist}'
 
             res = {
                 'version': "2.0",
