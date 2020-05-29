@@ -90,15 +90,6 @@ def findSongById(sid, df=songDf):
     artist = df.iloc[int(sid)].artist_name_basket
     return f'{song} - {artist}'
 
-def minmaxScaleTuplelist(arr):
-    ids = []
-    scores = []
-    for sid, score in arr:
-        ids.append(sid)
-        scores.append(score)
-    scaledScore = als.minmaxScale(scores)
-    return list(zip(ids, scaledScore))
-
 
 def findGenreTag(message) :
 
@@ -416,8 +407,12 @@ def message():
 
             s2vResult = s2v.getRecommendation(songs=user['myPlaylist'])
             alsResult = als.getRecommendation(songs=user['myPlaylist'])
-            s2vResult = minmaxScaleTuplelist(s2vResult)
-            alsResult = minmaxScaleTuplelist(alsResult)
+
+            s2vResultItem = [str(sid) for sid, score in s2vResult]
+            alsResultItem = [str(sid) for sid, score in alsResult]
+
+            s2vResult = list(zip(s2vResultItem, als.rankScore))
+            alsResult = list(zip(alsResultItem, als.rankScore))
 
             totalRank = als.combMNZ([s2vResult, alsResult])
             

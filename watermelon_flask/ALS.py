@@ -9,6 +9,8 @@ class PreCalculated():
         self.preScore = None
         self.songIdx = {}
         self.songSets = {}
+        self.rankScore = [0.02 *i for i in range(50,0,-1)]
+
         
         if path:
             self.preItem = self.loadData(path + "ALS_pre_rec_item.bin")
@@ -59,7 +61,7 @@ class PreCalculated():
             mi = ret[i] if ret[i] < mi else mi
             mx = ret[i] if ret[i] > mx else mx
         for i in range(len(ret)):
-            ret[i] = (ret[i] - mi) / mx
+            ret[i] = (ret[i] - mi) / (mx - mi)
         return ret
 
     def getRecommendation(self, songs=[], nSimilar=3):
@@ -74,4 +76,13 @@ class PreCalculated():
 
             rec.append(list(zip(self.preItem[i], scaledScore)))
         
-        return self.combMNZ(rec)    
+        result = self.combMNZ(rec)
+        ret = []
+        for item in result:
+            mid, score = item
+            mid = str(int(mid))
+            if mid in songs:
+                continue
+            ret.append((mid, score))
+
+        return ret
