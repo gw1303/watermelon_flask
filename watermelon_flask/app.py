@@ -3,7 +3,7 @@ from gensim.models import Word2Vec
 import pandas as pd
 from song2vec import Song2Vec
 from ALS import PreCalculated
-import sys
+import sys, random
 import pickle
 from konlpy.tag import Okt 
 import re
@@ -336,6 +336,9 @@ def message():
         if tags or genre :
 
             pred = s2v.getRecommendation(songs=user['myPlaylist'], tags=tags, genres=genre)
+            
+            if not user['myPlaylist']:
+                pred = sorted(random.sample(pred, 20), key=lambda x:x[1])
 
             txt = '당신에게 추천드리는 음악입니다.'
 
