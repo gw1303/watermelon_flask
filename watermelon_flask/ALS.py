@@ -76,4 +76,12 @@ class PreCalculated():
 
             rec.append(list(zip(self.preItem[i], scaledScore)))
         
-        return self.combMNZ(rec)    
+        result = self.combMNZ(rec)
+        ret = []
+        for item in result:
+            mid, score = item
+            if mid in songs:
+                continue
+            ret.append(item)
+
+        return ret
