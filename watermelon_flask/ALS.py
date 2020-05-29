@@ -80,7 +80,7 @@ class PreCalculated():
         ret = []
         for item in result:
             mid, score = item
-            if mid in songs:
+            if mid in map(int, songs):
                 continue
             ret.append(item)
 
