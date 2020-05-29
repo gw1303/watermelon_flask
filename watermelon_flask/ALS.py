@@ -79,9 +79,10 @@ class PreCalculated():
         result = self.combMNZ(rec)
         ret = []
         for item in result:
-            mid = str(item[0])
+            mid, score = item
+            mid = str(int(mid))
             if mid in songs:
                 continue
-            ret.append(item)
+            ret.append((mid, score))
 
         return ret
