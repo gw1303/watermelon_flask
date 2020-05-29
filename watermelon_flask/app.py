@@ -408,8 +408,8 @@ def message():
             s2vResult = s2v.getRecommendation(songs=user['myPlaylist'])
             alsResult = als.getRecommendation(songs=user['myPlaylist'])
 
-            s2vResultItem = [sid for sid, score in s2vResult]
-            alsResultItem = [sid for sid, score in alsResult]
+            s2vResultItem = [str(sid) for sid, score in s2vResult]
+            alsResultItem = [str(sid) for sid, score in alsResult]
 
             s2vResult = list(zip(s2vResultItem, als.rankScore))
             alsResult = list(zip(alsResultItem, als.rankScore))
